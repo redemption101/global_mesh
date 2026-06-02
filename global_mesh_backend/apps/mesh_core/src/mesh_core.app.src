@@ -1,0 +1,9 @@
+{application, mesh_core,
+ [{description, "Aetherion Data Router and Hybrid Storage Node"},
+  {vsn, "1.0.0"},
+  {registered, [mesh_supervisor, mesh_data_router]},
+  {mod, {mesh_core_app, []}},
+  {applications, [kernel, stdlib]},
+  {env,[]},
+  {modules, []}
+ ]}.

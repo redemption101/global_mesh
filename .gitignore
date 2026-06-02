@@ -1,0 +1,15 @@
+# Erlang & Rebar3 Artifacts
+global_mesh_backend/_build/
+global_mesh_backend/rebar.lock
+global_mesh_backend/erl_crash.dump
+*.beam
+.erlang.cookie
+
+# Rust Artifacts
+global_mesh_backend/apps/mesh_crypto/native/target/
+**/*.rs.bk
+
+# OS & Editor Files
+.DS_Store
+.vscode/
+.idea/

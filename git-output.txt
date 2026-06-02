@@ -1,0 +1,33 @@
+Git Status and Info 
+================= 
+ 
+Checking git status... 
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	DATABASE_ENTITY_MANIFEST.md
+	DATABASE_SEEDING.md
+	DATABASE_SEEDING_COMPLETE.md
+	DATABASE_SEEDING_QUICK_REF.md
+	INTEGRATION_GUIDE.md
+	SETUP_SUMMARY.md
+	check-status.bat
+	check-status.ps1
+	frontend/
+	git-output.txt
+	global_mesh_backend/
+	push-to-github.bat
+	rebar.config
+	save-status.bat
+	start-dev.bat
+	start-dev.sh
+
+nothing added to commit but untracked files present (use "git add" to track)
+ 
+Checking git remotes... 
+origin	https://github.com/redemption101/global_mesh.git (fetch)
+origin	https://github.com/redemption101/global_mesh.git (push)
+ 

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Aetherion MeshHub | Planetary Digital Economy Operating System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'JetBrains Mono', monospace;
+            background: radial-gradient(circle at 20% 30%, #0a0f1e, #03050b);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb { background: #14b8a6; border-radius: 8px; }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 1.25rem; }
+        .grid-bg { background-image: linear-gradient(to right, #1e293b 0.5px, transparent 0.5px), linear-gradient(to bottom, #1e293b 0.5px, transparent 0.5px); background-size: 30px 30px; }
+        .text-gradient { background: linear-gradient(135deg, #2dd4bf, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .live-dot { position: relative; }
+        .live-dot::after { content: ''; position: absolute; width: 8px; height: 8px; background: #10b981; border-radius: 50%; top: -2px; right: -8px; animation: ping 1.5s infinite; }
+        @keyframes ping { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+        .node-glow { animation: floatY 2s infinite ease-in-out; }
+        @keyframes floatY { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
+    </style>
+</head>
+<body class="antialiased">
+<div id="root" class="min-h-screen w-full"></div>
+
+<script type="text/javascript">
+    const SOUTH_AFRICAN_BANKS = [
+        { name: 'Capitec Bank', country: 'South Africa', continent: 'Africa', logo: '🏦' },
+        { name: 'Stripe', country: 'Global', continent: 'Global', logo: '⚡' }
+    ];
+
+    const ARCHITECTURES = [
+        { id: 'ARCH-FIN-SETTLE-88', name: 'Quantum Settlement Engine', industry: 'Financial Infrastructure', revenue: 4200000, growth: 12.4, adoption: 31.2, trust: 99.99, nodes: 194, transactions: 1200000000, impact: '$8.2M Fraud Prevented' }
+    ];
+
+    const LIVE_USERS = [
+        { id: '1', name: 'Mandlenkosi Vundla', location: 'Johannesburg', trustScore: 97, revenue: 420000, deployments: 184 },
+        { id: '2', name: 'Aisha Patel', location: 'Singapore', trustScore: 94, revenue: 310000, deployments: 112 }
+    ];
+
+    let state = {
+        liveTransactions: [], globalVolume: 419205199,
+        activeThreats: [
+            { id: 't1', type: 'Injection Exploit', location: 'US_EAST', severity: 'high', status: 'blocked' }
+        ],
+        selectedBank: SOUTH_AFRICAN_BANKS[0],
+        withdrawAmount: 14000, withdrawStatus: 'idle',
+        isDeploying: false, deploymentLogs: [],
+        selectedArch: ARCHITECTURES[0],
+        userWallet: { balance: 34882.44, available: 12400, pending: 22482 },
+        searchQuery: ''
+    };
+
+    let listeners = [];
+    function subscribe(listener) { listeners.push(listener); }
+    function setState(updater) {
+        if (typeof updater === 'function') state = updater(state);
+        else state = { ...state, ...updater };
+        listeners.forEach(fn => fn());
+    }
+
+    function startStreams() {
+        setInterval(() => {
+            const newTx = {
+                id: Math.random().toString(36).substr(2, 9),
+                from: 'Johannesburg', to: 'Singapore',
+                amount: Math.floor(Math.random() * 50000) + 500,
+                currency: 'USD', timestamp: Date.now(), type: 'license'
+            };
+            setState(s => ({
+                liveTransactions: [newTx, ...s.liveTransactions].slice(0, 8),
+                globalVolume: s.globalVolume + newTx.amount
+            }));
+        }, 3200);
+    }
+
+    async function handleWithdraw() {
+        setState({ withdrawStatus: 'processing' });
+        setTimeout(() => {
+            setState(s => ({
+                userWallet: { ...s.userWallet, balance: s.userWallet.balance - s.withdrawAmount, available: s.userWallet.available - s.withdrawAmount },
+                withdrawStatus: 'success'
+            }));
+            setTimeout(() => setState({ withdrawStatus: 'idle' }), 2500);
+        }, 1800);
+    }
+
+    // ⚡ REAL BACKEND CONNECTION ⚡
+    async function handleIgnitionDeploy() {
+        if (state.isDeploying) return;
+        setState({ isDeploying: true, deploymentLogs: ["[✓] Handshaking with Erlang BEAM Node on Port 4000..."] });
+        
+        try {
+            const response = await fetch("/api/ignition");
+            const data = await response.json();
+            
+            setState(s => ({
+                deploymentLogs: [
+                    ...s.deploymentLogs,
+                    "[✓] Connecting to Rust memory-safe crypto shard...",
+                    `[✓] NIF Executed! 512-bit JWT Generated: ${data.lockdown_key.substring(0, 24)}...`,
+                    `[✓] ${data.message}`,
+                    "✅ Deployment Complete. Global mesh updated."
+                ]
+            }));
+
+            setTimeout(() => {
+                setState(s => ({ 
+                    isDeploying: false,
+                    userWallet: { ...s.userWallet, balance: s.userWallet.balance + 10000, available: s.userWallet.available + 10000 }
+                }));
+            }, 1500);
+        } catch (err) {
+            setState(s => ({ deploymentLogs: [...s.deploymentLogs, "[!] ERROR: Failed to reach backend API."], isDeploying: false }));
+        }
+    }
+
+    function renderApp() {
+        const root = document.getElementById('root');
+        if (!root) return;
+        
+        const html = `
+            <div class="min-h-screen bg-gradient-to-br from-slate-950 via-gray-900 to-black text-slate-200 font-mono">
+                <div class="fixed inset-0 grid-bg opacity-5 pointer-events-none"></div>
+                <div class="relative z-10 container mx-auto px-4 py-6 md:px-6">
+                    <div class="flex flex-wrap justify-between items-center border-b border-cyan-500/30 pb-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-gradient-to-r from-cyan-500 to-purple-600 p-2 rounded-xl shadow-lg">
+                                <i data-lucide="globe" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-2xl md:text-3xl font-bold text-gradient">AETHERION MESH HUB</h1>
+                                <p class="text-xs text-cyan-400/70 tracking-wide">Planetary Digital Economy Operating System</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="space-y-6">
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="wallet" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">👛 CREATOR WALLET</h3></div>
+                                <div class="text-center"><div class="text-3xl font-bold text-green-400">$${state.userWallet.balance.toLocaleString()}</div><div class="flex justify-center gap-4 text-xs mt-1"><span>Available: $${state.userWallet.available.toLocaleString()}</span></div></div>
+                                <div class="border-t border-gray-700 pt-3 mt-2">
+                                    <button id="withdrawBtn" class="bg-gradient-to-r from-cyan-600 to-purple-600 px-4 py-2 rounded text-sm font-bold w-full">${state.withdrawStatus === 'processing' ? '⏳ PROCESSING...' : 'WITHDRAW $14,000'}</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🚀 IGNITION DEPLOYMENT TERMINAL</h3></div>
+                                <button id="ignitionBtn" class="w-full bg-gradient-to-r from-emerald-600 to-cyan-600 py-2 rounded font-bold flex justify-center gap-2 disabled:opacity-50">${state.isDeploying ? '⏳ DEPLOYING...' : '⚡ EXECUTE INTERSTELLAR IGNITION'}</button>
+                                <div class="bg-black/70 p-2 rounded h-32 overflow-y-auto font-mono text-xs mt-3">${state.deploymentLogs.map(log => `<div class="text-green-400">${log}</div>`).join('') || '<div class="text-gray-500">aetherion_core@mesh:~$ Awaiting ignition command...</div>'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        root.innerHTML = html;
+        lucide.createIcons();
+        
+        const ignitionBtn = document.getElementById('ignitionBtn');
+        if (ignitionBtn) ignitionBtn.addEventListener('click', handleIgnitionDeploy);
+        
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        if (withdrawBtn) withdrawBtn.addEventListener('click', handleWithdraw);
+    }
+    
+    startStreams();
+    subscribe(renderApp);
+    renderApp();
+</script>
+</body>
+</html>

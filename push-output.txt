@@ -1,0 +1,262 @@
+============================================
+Git Push to GitHub - Output Log
+============================================
+
+Current directory: c:\Users\vundl\Documents\global_mesh
+
+Step 1: Adding all files to git...
+warning: in the working copy of 'git-output.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/LICENSE', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/Makefile', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/README.asciidoc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/ebin/cowboy.app', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/erlang.mk', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/hex_metadata.config', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/plugins.mk', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/rebar.config', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_app.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_bstr.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_children.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_clear.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_clock.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_compress_h.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_constraints.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_decompress_h.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_handler.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_http.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_http2.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_loop.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_metrics_h.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_middleware.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_req.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_rest.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_router.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_static.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_stream.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_stream_h.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_sub_protocol.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_sup.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_tls.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_tracer_h.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowboy/src/cowboy_websocket.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/LICENSE', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/Makefile', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/README.asciidoc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/ebin/cowlib.app', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/erlang.mk', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/hex_metadata.config', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/include/cow_inline.hrl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/include/cow_parse.hrl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_base64url.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_cookie.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_date.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_hpack.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_hpack_dec_huffman_lookup.hrl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_http.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_http2.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_http2_machine.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_http_hd.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_http_struct_hd.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_http_te.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_iolists.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_link.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_mimetypes.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_mimetypes.erl.src', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_multipart.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_qs.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_spdy.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_spdy.hrl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_sse.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_uri.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_uri_template.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/cowlib/src/cow_ws.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/LICENSE', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/Makefile', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/decoder.c', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/decoder.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/AUTHORS', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/COPYING', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/LICENSE', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/VERSION', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/bignum-dtoa.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/bignum-dtoa.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/bignum-dtoa.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/bignum.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/bignum.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/bignum.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/cached-powers.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/cached-powers.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/cached-powers.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/diy-fp.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/diy-fp.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/diy-fp.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/double-conversion.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/double-conversion.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/double-conversion.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/fast-dtoa.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/fast-dtoa.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/fast-dtoa.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/fixed-dtoa.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/fixed-dtoa.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/fixed-dtoa.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/ieee.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/strtod.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/strtod.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/strtod.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/double-conversion/utils.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/doubles.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/doubles.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/encoder.c', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/encoder.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/jiffy.c', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/jiffy.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/jiffy.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/objects.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/objects.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/termstack.c', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/termstack.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/termstack.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/utf8.c', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/utf8.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/util.c', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/c_src/util.d', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/ebin/jiffy.app', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/hex_metadata.config', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/plugins/rebar_gdb_plugin.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/rebar.config', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/rebar.config.script', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/src/jiffy.app.src', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/src/jiffy.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/src/jiffy_utf8.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/array.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/array.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/array_close.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/array_close.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/array_open.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/array_open.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/bogus_char.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/bogus_char.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/codepoints_from_unicode_org.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/deep_arrays.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/difficult_json_c_test_case.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/difficult_json_c_test_case.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/doubles.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/doubles.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/empty_string.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/escaped_bulgarian.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/escaped_bulgarian.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/escaped_foobar.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/false.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/false_then_garbage.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/four_byte_utf8.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/four_byte_utf8.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/integers.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/integers.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/invalid_utf8.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/invalid_utf8.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/isolated_surrogate_marker.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/isolated_surrogate_marker.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/leading_zero_in_number.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/leading_zero_in_number.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/lonely_minus_sign.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/lonely_minus_sign.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/map_close.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/map_close.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/map_open.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/map_open.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/missing_integer_after_decimal_point.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/missing_integer_after_decimal_point.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/missing_integer_after_exponent.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/missing_integer_after_exponent.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/non_utf8_char_in_string.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/null.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/null_then_garbage.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/null_then_garbage.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/nulls_and_bools.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/nulls_and_bools.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/short-doubles.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/simple.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/simple.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_invalid_escape.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_invalid_escape.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_invalid_hex_char.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_invalid_hex_char.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_with_escapes.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_with_escapes.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_with_invalid_newline.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/string_with_invalid_newline.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/three_byte_utf8.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/three_byte_utf8.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/true.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/true_then_garbage.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/unescaped_bulgarian.eterm', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/cases/unescaped_bulgarian.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/compile-check.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_01_yajl_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_02_literal_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_03_number_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_04_string_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_05_array_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_06_object_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_07_compound_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_08_halfword_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_09_reg_issue_24_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_10_short_double_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_11_property_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_12_error_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_13_whitespace_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_15_return_trailer_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_16_dedupe_keys_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_17_copy_strings_tests.erl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/jiffy/test/jiffy_util.hrl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'global_mesh_backend/_build/default/lib/mesh_api/ebin/mesh_api.app', LF will be replaced by CRLF the next time Git touches it
+error: open("global_mesh_backend/_build/default/lib/mesh_api/include"): Function not implemented
+error: unable to index file 'global_mesh_backend/_build/default/lib/mesh_api/include'
+fatal: adding files failed
+Git add completed with exit code: 128
+
+Step 2: Creating initial commit...
+On branch main
+
+Initial commit
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	DATABASE_ENTITY_MANIFEST.md
+	DATABASE_SEEDING.md
+	DATABASE_SEEDING_COMPLETE.md
+	DATABASE_SEEDING_QUICK_REF.md
+	INTEGRATION_GUIDE.md
+	SETUP_SUMMARY.md
+	check-status.bat
+	check-status.ps1
+	commit-and-push.bat
+	do-push.bat
+	frontend/
+	git-output.txt
+	global_mesh_backend/
+	push-output.txt
+	push-to-github.bat
+	push.ps1
+	rebar.config
+	save-status.bat
+	start-dev.bat
+	start-dev.sh
+
+nothing added to commit but untracked files present (use "git add" to track)
+Git commit completed with exit code: 1
+
+Step 3: Setting branch to main...
+Branch rename completed with exit code: 0
+
+Step 4: Pushing to GitHub...
+error: src refspec main does not match any
+error: failed to push some refs to 'https://github.com/redemption101/global_mesh.git'
+Push completed with exit code: 1
+
+============================================
+Process Complete
+============================================

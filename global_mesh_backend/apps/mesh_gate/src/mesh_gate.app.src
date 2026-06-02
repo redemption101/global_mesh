@@ -1,0 +1,11 @@
+{application, mesh_gate,
+ [{description, "Newtonian Guard AI Security Node"},
+  {vsn, "1.0.0"},
+  {registered, [newtonian_guard]},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []}
+ ]}.

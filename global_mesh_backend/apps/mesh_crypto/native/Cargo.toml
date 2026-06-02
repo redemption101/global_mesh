@@ -1,0 +1,13 @@
+[package]
+name = "mesh_crypto"
+version = "1.0.0"
+edition = "2021"
+
+[lib]
+name = "mesh_crypto"
+crate-type = ["cdylib"]
+
+[dependencies]
+rustler = "0.29.1"
+sha2 = "0.10.8"
+hex = "0.4.3"

@@ -1,0 +1,11 @@
+{application, mesh_ledger,
+ [{description, "Global Banking Settlement API Hub"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []}
+ ]}.

@@ -1,0 +1,9 @@
+{application, mesh_api,
+ [{description, "Aetherion Global Mesh HTTP & WebSocket API Gateway"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {mod, {mesh_api_app, []}},
+  {applications, [kernel, stdlib, cowboy, jiffy]},
+  {env,[]},
+  {modules, []}
+ ]}.
