@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Aetherion MeshHub | Planetary Digital Economy Operating System</title>
+    <!-- Tailwind CSS v3 + Basic Interactivity -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom font & smooth scroll behavior -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (lightweight) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Recharts (lightweight charting) -->
+    <script src="https://cdn.jsdelivr.net/npm/recharts@2.10.3/umd/Recharts.min.js"></script>
+    <!-- Framer Motion via ESM? not needed for static; we'll use simple CSS animations -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', 'JetBrains Mono', monospace;
+            background: radial-gradient(circle at 20% 30%, #0a0f1e, #03050b);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #14b8a6;
+            border-radius: 8px;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 1.25rem;
+        }
+        .animate-pulse-slow {
+            animation: pulseGlow 3s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(6, 182, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        }
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, #1e293b 0.5px, transparent 0.5px),
+                linear-gradient(to bottom, #1e293b 0.5px, transparent 0.5px);
+            background-size: 30px 30px;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #2dd4bf, #a855f7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hover-glow:hover {
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
+            transition: all 0.2s ease;
+        }
+        .live-dot {
+            position: relative;
+        }
+        .live-dot::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            top: -2px;
+            right: -8px;
+            animation: ping 1.5s infinite;
+        }
+        @keyframes ping {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+        .node-glow {
+            animation: floatY 2s infinite ease-in-out;
+        }
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<div id="root" class="min-h-screen w-full"></div>
+
+<!-- TypeScript + React-like implementation (using pure JSX without compiler, but we build UI in TS style) -->
+<script type="text/javascript">
+    // --- TypeScript interfaces (runtime types via JSDoc) ---
+    // We'll build everything in pure JS but with strict TypeScript mindset.
+    // We'll use functional components with global state.
+
+    // ---------- DATA MODELS ----------
+    const SOUTH_AFRICAN_BANKS = [
+        { name: 'Capitec Bank', country: 'South Africa', continent: 'Africa', logo: '🏦' },
+        { name: 'Standard Bank', country: 'South Africa', continent: 'Africa', logo: '🏛️' },
+        { name: 'Nedbank', country: 'South Africa', continent: 'Africa', logo: '💎' },
+        { name: 'FNB', country: 'South Africa', continent: 'Africa', logo: '🟠' },
+        { name: 'ABSA Group', country: 'South Africa', continent: 'Africa', logo: '🔷' }
+    ];
+
+    const GLOBAL_BANKS = [
+        ...SOUTH_AFRICAN_BANKS,
+        { name: 'Stripe', country: 'Global', continent: 'Global', logo: '⚡' },
+        { name: 'JPMorgan Chase', country: 'USA', continent: 'North America', logo: '🏛️' },
+        { name: 'Bank of America', country: 'USA', continent: 'North America', logo: '🔴' },
+        { name: 'HSBC', country: 'UK', continent: 'Europe', logo: '🌍' },
+        { name: 'Barclays', country: 'UK', continent: 'Europe', logo: '🔷' },
+        { name: 'Deutsche Bank', country: 'Germany', continent: 'Europe', logo: '🟨' },
+        { name: 'DBS Bank', country: 'Singapore', continent: 'Asia', logo: '🏯' },
+        { name: 'Mitsubishi UFJ', country: 'Japan', continent: 'Asia', logo: '🗾' },
+        { name: 'Itaú Unibanco', country: 'Brazil', continent: 'South America', logo: '🟠' }
+    ];
+
+    const ARCHITECTURES = [
+        { id: 'ARCH-FIN-SETTLE-88', name: 'Quantum Settlement Engine', industry: 'Financial Infrastructure', revenue: 4200000, growth: 12.4, adoption: 31.2, trust: 99.99, nodes: 194, transactions: 1200000000, impact: '$8.2M Fraud Prevented' },
+        { id: 'ARCH-HEALTH-DIAG-01', name: 'Global Diagnostic Mesh', industry: 'Healthcare', revenue: 2800000, growth: 18.7, adoption: 24.5, trust: 99.97, nodes: 86, transactions: 450000000, impact: '1.4M Patients Diagnosed' },
+        { id: 'ARCH-ENERGY-GRID-42', name: 'Smart Energy Optimizer', industry: 'Energy', revenue: 1900000, growth: 8.2, adoption: 19.8, trust: 99.95, nodes: 312, transactions: 89000000, impact: '18 GWh Energy Saved' },
+        { id: 'ARCH-AGRI-YIELD-77', name: 'Precision Agriculture Core', industry: 'Agriculture', revenue: 1200000, growth: 22.1, adoption: 34.6, trust: 99.98, nodes: 67, transactions: 23400000, impact: '23% Farm Yield Increased' }
+    ];
+
+    const LIVE_USERS = [
+        { id: '1', name: 'Mandlenkosi Vundla', location: 'Johannesburg', trustScore: 97, revenue: 420000, deployments: 184 },
+        { id: '2', name: 'Aisha Patel', location: 'Singapore', trustScore: 94, revenue: 310000, deployments: 112 },
+        { id: '3', name: 'Klaus Schmidt', location: 'Frankfurt', trustScore: 99, revenue: 890000, deployments: 267 },
+        { id: '4', name: 'Yuki Tanaka', location: 'Tokyo', trustScore: 96, revenue: 520000, deployments: 145 },
+        { id: '5', name: 'Thabo Nkosi', location: 'Cape Town', trustScore: 91, revenue: 189000, deployments: 73 }
+    ];
+
+    // ---------- GLOBAL STATE (reactive vanilla) ----------
+    let state = {
+        liveTransactions: [],
+        globalVolume: 419205199,
+        activeThreats: [
+            { id: 't1', type: 'Injection Exploit', location: 'US_EAST', severity: 'high', status: 'blocked' },
+            { id: 't2', type: 'DDoS Attempt', location: 'EU_CENTRAL', severity: 'medium', status: 'blocked' },
+            { id: 't3', type: 'Unauthorized Access', location: 'ZA_GP', severity: 'low', status: 'investigating' }
+        ],
+        selectedBank: SOUTH_AFRICAN_BANKS[0],
+        withdrawAmount: 14000,
+        withdrawStatus: 'idle',
+        isDeploying: false,
+        deploymentLogs: [],
+        isSeeding: false,
+        seedLogs: [],
+        dbStats: {},
+        selectedArch: ARCHITECTURES[0],
+        userWallet: { balance: 34882.44, available: 12400, pending: 22482 },
+        searchQuery: ''
+    };
+
+    let listeners = [];
+
+    function subscribe(listener) { listeners.push(listener); }
+    function setState(updater) {
+        if (typeof updater === 'function') state = updater(state);
+        else state = { ...state, ...updater };
+        listeners.forEach(fn => fn());
+    }
+
+    // Helper: update live stream
+    function startStreams() {
+        setInterval(() => {
+            const locations = ['Johannesburg', 'Singapore', 'Frankfurt', 'Tokyo', 'São Paulo'];
+            const destinations = ['Cape Town', 'Durban', 'Nairobi', 'Lagos', 'Cairo'];
+            const types = ['license', 'royalty', 'investment', 'api'];
+            const newTx = {
+                id: Math.random().toString(36).substr(2, 9),
+                from: locations[Math.floor(Math.random() * locations.length)],
+                to: destinations[Math.floor(Math.random() * destinations.length)],
+                amount: Math.floor(Math.random() * 50000) + 500,
+                currency: 'USD',
+                timestamp: Date.now(),
+                type: types[Math.floor(Math.random() * types.length)]
+            };
+            setState(s => ({
+                liveTransactions: [newTx, ...s.liveTransactions].slice(0, 8),
+                globalVolume: s.globalVolume + newTx.amount
+            }));
+        }, 3200);
+
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const threatTypes = ['SQL Injection', 'XSS Attack', 'API Abuse', 'Credential Stuffing'];
+                const locs = ['ZA_GP', 'EU_CENTRAL', 'US_EAST', 'SG_CLUSTER'];
+                const severities = ['low', 'medium', 'high'];
+                const newThreat = {
+                    id: Math.random().toString(36).substr(2, 8),
+                    type: threatTypes[Math.floor(Math.random() * threatTypes.length)],
+                    location: locs[Math.floor(Math.random() * locs.length)],
+                    severity: severities[Math.floor(Math.random() * severities.length)],
+                    status: Math.random() > 0.3 ? 'blocked' : 'investigating'
+                };
+                setState(s => ({ activeThreats: [newThreat, ...s.activeThreats].slice(0, 6) }));
+            }
+        }, 7500);
+    }
+
+    // Handlers
+    async function handleWithdraw() {
+        setState({ withdrawStatus: 'processing' });
+        setTimeout(() => {
+            setState(s => ({
+                userWallet: { ...s.userWallet, balance: s.userWallet.balance - s.withdrawAmount, available: s.userWallet.available - s.withdrawAmount },
+                withdrawStatus: 'success'
+            }));
+            setTimeout(() => setState({ withdrawStatus: 'idle' }), 2500);
+        }, 1800);
+    }
+
+    async function handleIgnitionDeploy() {
+        if (state.isDeploying) return;
+        setState({ isDeploying: true, deploymentLogs: ["[✓] Connecting to Erlang BEAM Node on Port 4000..."] });
+        
+        try {
+            const response = await fetch("http://localhost:4000/api/ignition", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    architectureId: state.selectedArch.id,
+                    timestamp: Date.now()
+                })
+            });
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            
+            setState(s => ({
+                deploymentLogs: [
+                    ...s.deploymentLogs,
+                    "[✓] Connecting to Rust memory-safe crypto shard...",
+                    `[✓] NIF Executed! 512-bit JWT Generated: ${data.lockdown_key.substring(0, 24)}...`,
+                    `[✓] ${data.message}`,
+                    "✅ Deployment Complete. Global mesh updated."
+                ]
+            }));
+            
+            setTimeout(() => {
+                setState({ isDeploying: false });
+                setState(s => ({
+                    globalVolume: s.globalVolume + 10000,
+                    userWallet: { ...s.userWallet, balance: s.userWallet.balance + 10000, available: s.userWallet.available + 10000 }
+                }));
+                renderApp();
+            }, 1500);
+        } catch (error) {
+            setState(s => ({
+                deploymentLogs: [
+                    ...s.deploymentLogs,
+                    `[!] ERROR: ${error.message}`,
+                    "[!] Failed to connect to backend API. Is Erlang running on Port 4000?"
+                ],
+                isDeploying: false
+            }));
+            renderApp();
+        }
+    }
+
+    async function handleSeedDatabase() {
+        if (state.isSeeding) return;
+        setState({ isSeeding: true, seedLogs: ["[✓] Initiating database seeding sequence..."] });
+        
+        try {
+            const response = await fetch("http://localhost:4000/api/seed", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            });
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            
+            const stats = data.statistics || {};
+            setState(s => ({
+                seedLogs: [
+                    ...s.seedLogs,
+                    `[✓] Seeding sovereign architects...`,
+                    `[✓] Seeding co-founders (${stats.co_founders || 0})...`,
+                    `[✓] Seeding global entities database...`,
+                    `[✓] Indexed ${stats.entities || 0} entities`,
+                    `[✓] ${stats.sovereign_architects || 0} sovereign architect(s) registered`,
+                    `✅ Database Seeding Complete!`
+                ],
+                dbStats: stats
+            }));
+            
+            setTimeout(() => {
+                setState({ isSeeding: false });
+                renderApp();
+            }, 1500);
+        } catch (error) {
+            setState(s => ({
+                seedLogs: [
+                    ...s.seedLogs,
+                    `[!] ERROR: ${error.message}`,
+                    "[!] Failed to seed database"
+                ],
+                isSeeding: false
+            }));
+            renderApp();
+        }
+    }
+
+    // ----- UI Components (pure DOM render) -----
+    function renderApp() {
+        const root = document.getElementById('root');
+        if (!root) return;
+        
+        const liveTx = state.liveTransactions;
+        const threats = state.activeThreats;
+        const selectedArchData = state.selectedArch;
+        const wallet = state.userWallet;
+        const deployLogs = state.deploymentLogs;
+        const isDeployActive = state.isDeploying;
+        const seedLogs = state.seedLogs;
+        const isSeeding = state.isSeeding;
+        const dbStats = state.dbStats;
+        const searchValue = state.searchQuery;
+        const withdrawStat = state.withdrawStatus;
+        const selectedBankObj = state.selectedBank;
+        
+        // helper for threat severity style
+        const getSeverityClass = (sev) => {
+            if (sev === 'high') return 'bg-red-500/30 text-red-300';
+            if (sev === 'medium') return 'bg-yellow-500/30 text-yellow-300';
+            return 'bg-blue-500/30 text-blue-300';
+        };
+        
+        const volumeData = [
+            { time: '00:00', volume: 380 }, { time: '04:00', volume: 410 }, { time: '08:00', volume: 395 },
+            { time: '12:00', volume: 425 }, { time: '16:00', volume: 419 }, { time: '20:00', volume: 435 }
+        ];
+        
+        const html = `
+            <div class="min-h-screen bg-gradient-to-br from-slate-950 via-gray-900 to-black text-slate-200 font-mono">
+                <!-- grid bg -->
+                <div class="fixed inset-0 grid-bg opacity-5 pointer-events-none"></div>
+                <div class="relative z-10 container mx-auto px-4 py-6 md:px-6">
+                    <!-- HEADER -->
+                    <div class="flex flex-wrap justify-between items-center border-b border-cyan-500/30 pb-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-gradient-to-r from-cyan-500 to-purple-600 p-2 rounded-xl shadow-lg">
+                                <i data-lucide="globe" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-2xl md:text-3xl font-bold text-gradient">AETHERION MESH HUB</h1>
+                                <p class="text-xs text-cyan-400/70 tracking-wide">Planetary Digital Economy Operating System</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 mt-2 md:mt-0">
+                            <div class="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-cyan-500/40"><i data-lucide="radio" class="w-3 h-3 text-green-400 animate-pulse"></i><span class="text-xs">UPTIME: 99.9999999998%</span></div>
+                            <div class="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-purple-500/40"><i data-lucide="network" class="w-3 h-3 text-purple-400"></i><span class="text-xs">NODES: 2.94M</span></div>
+                        </div>
+                    </div>
+                    
+                    <!-- METRICS ROW -->
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                        ${renderMetricCard('<i data-lucide="coins"></i>', 'ECONOMIC VOLUME', `$${state.globalVolume.toLocaleString()}`, '+12.4%', 'cyan')}
+                        ${renderMetricCard('<i data-lucide="activity"></i>', 'TX/SECOND', '148.9M', '+2.1%', 'purple')}
+                        ${renderMetricCard('<i data-lucide="shield-check"></i>', 'THREATS BLOCKED', '14,294', '-3%', 'green')}
+                        ${renderMetricCard('<i data-lucide="git-branch"></i>', 'ACTIVE PROPOSALS', '42 RFCs', '+8', 'orange')}
+                        ${renderMetricCard('<i data-lucide="users"></i>', 'LIVE ARCHITECTS', LIVE_USERS.length.toString(), `+${LIVE_USERS.length}`, 'blue')}
+                    </div>
+                    
+                    <!-- 3-COLUMN MAIN -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- LEFT COLUMN -->
+                        <div class="space-y-6">
+                            <!-- LIVE ECONOMIC STREAM -->
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="banknote" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm tracking-wider">💸 LIVE ECONOMIC STREAM</h3></div>
+                                <div class="h-64 overflow-y-auto space-y-2 pr-1">
+                                    ${liveTx.map(tx => `
+                                        <div class="bg-gray-800/40 border-l-4 border-cyan-500 p-2 rounded text-xs transition-all">
+                                            <div class="flex justify-between"><span class="text-cyan-300 font-mono">${tx.type.toUpperCase()}</span><span class="text-gray-400">${new Date(tx.timestamp).toLocaleTimeString()}</span></div>
+                                            <div class="flex justify-between mt-1"><span>${tx.from} → ${tx.to}</span><span class="text-green-400 font-bold">$${tx.amount.toLocaleString()}</span></div>
+                                        </div>
+                                    `).join('') || '<div class="text-center text-gray-500 mt-8">Awaiting economic ignition...</div>'}
+                                </div>
+                            </div>
+                            <!-- CREATOR WALLET + BANKING -->
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="wallet" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">👛 CREATOR WALLET</h3></div>
+                                <div class="text-center"><div class="text-3xl font-bold text-green-400">$${wallet.balance.toLocaleString()}</div><div class="flex justify-center gap-4 text-xs mt-1"><span>Available: $${wallet.available.toLocaleString()}</span><span>Pending: $${wallet.pending.toLocaleString()}</span></div></div>
+                                <div class="border-t border-gray-700 pt-3 mt-2"><label class="text-xs text-gray-400">Withdraw to</label>
+                                <div class="flex gap-2 mt-1 mb-2 overflow-x-auto pb-1">${GLOBAL_BANKS.slice(0,8).map(b => `<button class="withdraw-bank-btn px-2 py-1 rounded text-xs whitespace-nowrap ${selectedBankObj.name === b.name ? 'bg-cyan-600' : 'bg-gray-800'}" data-bank='${JSON.stringify(b)}'>${b.logo} ${b.name}</button>`).join('')}</div>
+                                <div class="flex gap-2 mt-2"><input type="number" id="withdrawAmountInput" value="${state.withdrawAmount}" class="bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm flex-1"><button id="withdrawBtn" class="bg-gradient-to-r from-cyan-600 to-purple-600 px-4 py-2 rounded text-sm font-bold">${withdrawStat === 'processing' ? '⏳' : 'WITHDRAW'}</button></div>
+                                ${withdrawStat === 'success' ? `<div class="text-green-400 text-xs mt-2 flex items-center gap-1">✓ Settlement to ${selectedBankObj.name} in ~12 minutes</div>` : ''}
+                                </div>
+                            </div>
+                            <!-- SECURITY HUB -->
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="shield" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🛡️ SECURITY OPERATIONAL HUB</h3></div>
+                                <div class="space-y-2">${threats.map(t => `<div class="flex justify-between items-center bg-gray-800/20 p-2 rounded text-xs"><div class="flex gap-2"><span>${t.status === 'blocked' ? '✓' : '⚠'}</span><span>${t.type}</span><span class="text-gray-500">${t.location}</span></div><div class="px-1 rounded ${getSeverityClass(t.severity)}">${t.severity}</div></div>`).join('')}</div>
+                                <div class="text-center text-xs text-green-400 mt-3">🛡️ Void Guard Active — ${threats.filter(t => t.status === 'blocked').length} threats neutralized</div>
+                            </div>
+                        </div>
+                        
+                        <!-- MIDDLE COLUMN -->
+                        <div class="space-y-6">
+                            <!-- SEARCH -->
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="search" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🔍 KNOWLEDGE GRAPH SEARCH</h3></div>
+                                <form id="searchForm" class="flex gap-2"><input type="text" id="searchInput" value="${searchValue}" placeholder="fraud detection, quantum mesh..." class="flex-1 bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm"><button type="submit" class="bg-cyan-600 px-4 rounded text-sm">SEARCH</button></form>
+                                ${searchValue ? `<div class="mt-3 text-xs space-y-1"><div>✓ 1 Architecture Found</div><div>• 10 Research Artifacts</div><div>• 2 Capital Providers</div><div>• 7 Mesh Specialists</div></div>` : ''}
+                            </div>
+                            <!-- ARCHITECTURE STOCK MARKET -->
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="trending-up" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">📈 ARCHITECTURE STOCK MARKET</h3></div>
+                                <div class="flex gap-2 overflow-x-auto pb-2">${ARCHITECTURES.map(arch => `<button class="arch-select-btn px-3 py-1 rounded-full text-xs whitespace-nowrap ${selectedArchData.id === arch.id ? 'bg-cyan-600' : 'bg-gray-800'}" data-arch='${JSON.stringify(arch)}'>${arch.name.split(' ')[0]}</button>`).join('')}</div>
+                                <div class="bg-gray-800/40 p-3 rounded mt-2"><div class="flex justify-between"><div><div class="text-xs text-gray-400">${selectedArchData.id}</div><div class="text-lg font-bold">${selectedArchData.name}</div><div class="text-xs text-cyan-400">${selectedArchData.industry}</div></div><div class="text-right"><div class="text-2xl font-bold text-green-400">$${(selectedArchData.revenue/1e6).toFixed(1)}M</div><div class="text-xs text-green-300">+${selectedArchData.growth}% Growth</div></div></div>
+                                <div class="grid grid-cols-3 gap-2 mt-3 text-center text-xs"><div><span class="text-gray-400">Adoption</span><br>${selectedArchData.adoption}%</div><div><span class="text-gray-400">Trust</span><br>${selectedArchData.trust}%</div><div><span class="text-gray-400">Nodes</span><br>${selectedArchData.nodes}</div></div><div class="mt-2 text-purple-300 text-xs border-t border-gray-700 pt-2">${selectedArchData.impact}</div></div>
+                            </div>
+                            <!-- IGNITION TERMINAL -->
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🚀 IGNITION DEPLOYMENT TERMINAL</h3></div>
+                                <button id="ignitionBtn" class="w-full bg-gradient-to-r from-emerald-600 to-cyan-600 py-2 rounded font-bold flex justify-center gap-2 disabled:opacity-50">${isDeployActive ? '⏳ DEPLOYING...' : '⚡ EXECUTE INTERSTELLAR IGNITION'}</button>
+                                <div class="bg-black/70 p-2 rounded h-32 overflow-y-auto font-mono text-xs mt-3">${deployLogs.map(log => `<div class="text-green-400">${log}</div>`).join('') || '<div class="text-gray-500">aetherion_core@mesh:~$ Type ignition to deploy across 6 regions</div>'}${(!isDeployActive && deployLogs.length>0) ? '<div class="text-cyan-400 mt-1">✅ Deployment Complete. Global mesh updated.</div>' : ''}</div>
+                            </div>
+
+                            <!-- DATABASE SEEDING TERMINAL -->
+                            <div class="glass-card p-4">
+                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="database" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">💾 DATABASE SEEDING CONSOLE</h3></div>
+                                <button id="seedBtn" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 py-2 rounded font-bold flex justify-center gap-2 disabled:opacity-50">${isSeeding ? '⏳ SEEDING DATABASE...' : '🌱 POPULATE MESH DATABASE'}</button>
+                                <div class="bg-black/70 p-2 rounded h-32 overflow-y-auto font-mono text-xs mt-3">${seedLogs.map(log => `<div class="text-green-400">${log}</div>`).join('') || '<div class="text-gray-500">mesh_seed@database:~$ Ready to seed with entities...</div>'}
+                                ${(!isSeeding && dbStats.entities) ? `<div class="text-cyan-400 mt-2 text-xs"><div>📊 Database Stats:</div><div>• Sovereign Architects: ${dbStats.sovereign_architects}</div><div>• Co-Founders: ${dbStats.co_founders}</div><div>• Total Entities: ${dbStats.entities}</div></div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- RIGHT COLUMN -->
+                        <div class="space-y-6">
+                            <div class="glass-card p-4"><div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="users" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">👥 LIVE HUMAN PRESENCE</h3></div>
+                            <div class="space-y-2">${LIVE_USERS.map(u => `<div class="flex justify-between bg-gray-800/30 p-2 rounded"><div class="flex gap-2"><div class="w-2 h-2 bg-green-400 rounded-full animate-pulse mt-1.5"></div><div><div class="text-sm font-semibold">${u.name}</div><div class="text-xs text-gray-400 flex gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> ${u.location}</div></div></div><div class="text-right text-xs"><div class="text-cyan-300">Trust ${u.trustScore}</div><div>${u.deployments} deploys</div></div></div>`).join('')}</div>
+                            <div class="text-center text-xs text-cyan-400 mt-3">🌍 2,948 nodes active across 6 shards</div></div>
+                            
+                            <div class="glass-card p-4"><div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🤖 DIGITAL TWIN SIMULATION</h3></div>
+                            <div class="text-center space-y-2"><div class="flex justify-around text-xs"><div><span class="text-gray-400">Projected Users</span><br><span class="text-white text-lg">45M</span></div><div><span class="text-gray-400">Monthly Cost</span><br><span class="text-white text-lg">$12k</span></div><div><span class="text-gray-400">Failure Prob.</span><br><span class="text-green-400 text-lg">0.003%</span></div></div><div class="h-12 bg-gray-800 rounded-full overflow-hidden"><div class="w-[99.997%] bg-gradient-to-r from-green-500 to-cyan-500 h-full rounded-full flex justify-end pr-2 text-xs items-center">HEALTHY</div></div><button class="text-xs bg-gray-800 px-4 py-1 rounded">RUN NEW SIMULATION →</button></div></div>
+                            
+                            <div class="glass-card p-4"><div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="git-branch" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">⚖️ GOVERNANCE & INNOVATION</h3></div>
+                            <div class="space-y-2"><div class="flex justify-between text-sm"><span>Active RFCs</span><span class="text-cyan-400">42</span></div><div class="flex justify-between text-sm"><span>Pending Proposals</span><span class="text-yellow-400">18</span></div><div class="border-t border-gray-700 pt-2"><div class="text-xs text-gray-400">Innovation Pipeline</div><div class="flex justify-between text-[10px] mt-1"><span>Idea</span><span>Proto</span><span>Valid</span><span>Deploy</span><span>Scale</span></div><div class="flex gap-1 h-1.5 mt-1"><div class="bg-gray-600 flex-1 rounded-full"></div><div class="bg-cyan-500 flex-1 rounded-full"></div><div class="bg-cyan-500 flex-1 rounded-full"></div><div class="bg-gray-600 flex-1 rounded-full"></div><div class="bg-gray-600 flex-1 rounded-full"></div></div><div class="text-[11px] text-center mt-2">📌 "AI Compliance Mesh" moving to Validation</div></div></div></div>
+                        </div>
+                    </div>
+                    
+                    <!-- BOTTOM: PLANETARY VIEW + TIMELINE -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                        <div class="lg:col-span-2 glass-card p-4">
+                            <div class="flex gap-2 items-center border-b border-gray-700 pb-2 mb-3"><i data-lucide="globe" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🌌 PLANETARY TOPOLOGY VIEW</h3></div>
+                            <div class="relative bg-black/40 rounded-lg h-48 flex justify-center items-center"><div class="flex flex-wrap justify-center gap-5">${['Johannesburg','Cape Town','Frankfurt','Singapore','Tokyo','São Paulo'].map(city => `<div class="text-center node-glow"><div class="w-3 h-3 bg-cyan-400 rounded-full mx-auto shadow-md shadow-cyan-500/40"></div><div class="text-[10px] mt-1">${city}</div></div>`).join('')}</div><div class="absolute bottom-2 left-2 text-[9px] text-gray-500">💰 revenue flows + ignition propagation active</div></div>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="flex gap-2 items-center border-b border-gray-700 pb-2 mb-3"><i data-lucide="clock" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🕒 MISSION CONTROL TIMELINE</h3></div>
+                            <div class="h-48 overflow-y-auto space-y-1 text-xs font-mono"><div class="text-green-400">10:42:01 Investor funded Healthcare Mesh</div><div class="text-cyan-400">10:42:05 License sold in Germany - $12,400</div><div class="text-red-400">10:42:07 Threat blocked in Virginia</div><div class="text-green-400">10:42:10 Deployment completed in Tokyo</div><div class="text-yellow-400">10:42:13 Royalty paid to @mandlenkosi</div><div class="text-purple-400">10:42:18 New Architecture: Quantum ML Core</div><div class="text-gray-500">10:42:22 Governance vote opened: RFC-42</div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 text-center text-[11px] text-gray-500 border-t border-gray-800 pt-4 flex flex-wrap justify-center gap-4"><span>🌍 Planetary Digital Economy</span><span>⚡ $${state.globalVolume.toLocaleString()} Total Volume</span><span>🔒 SOC Type-2 Certified</span><span>🏦 Connected to ${GLOBAL_BANKS.length} Global Banks</span></div>
+                </div>
+            </div>
+        `;
+        
+        root.innerHTML = html;
+        lucide.createIcons();
+        attachEventHandlers();
+    }
+    
+    function renderMetricCard(iconHtml, label, value, change, color) {
+        const borderColor = { cyan: 'border-cyan-500/30', purple: 'border-purple-500/30', green: 'border-green-500/30', orange: 'border-orange-500/30', blue: 'border-blue-500/30' }[color];
+        return `<div class="bg-gradient-to-br from-${color}-500/10 to-transparent border ${borderColor} rounded-xl p-3 backdrop-blur-sm"><div class="flex justify-between"><div class="text-gray-300">${iconHtml}</div><div class="text-green-400 text-xs">${change}</div></div><div class="text-xl font-bold mt-2">${value}</div><div class="text-[11px] text-gray-400 tracking-wider">${label}</div></div>`;
+    }
+    
+    function attachEventHandlers() {
+        // withdraw bank selection
+        document.querySelectorAll('.withdraw-bank-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const bankData = JSON.parse(btn.getAttribute('data-bank'));
+                setState({ selectedBank: bankData });
+                renderApp();
+            });
+        });
+        const withdrawInput = document.getElementById('withdrawAmountInput');
+        if (withdrawInput) withdrawInput.addEventListener('input', (e) => setState({ withdrawAmount: parseInt(e.target.value) || 0 }));
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        if (withdrawBtn) withdrawBtn.addEventListener('click', handleWithdraw);
+        
+        // ignition
+        const ignitionBtn = document.getElementById('ignitionBtn');
+        if (ignitionBtn) ignitionBtn.addEventListener('click', handleIgnitionDeploy);
+        
+        // seeding
+        const seedBtn = document.getElementById('seedBtn');
+        if (seedBtn) seedBtn.addEventListener('click', handleSeedDatabase);
+        
+        // architecture selection
+        document.querySelectorAll('.arch-select-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const arch = JSON.parse(btn.getAttribute('data-arch'));
+                setState({ selectedArch: arch });
+                renderApp();
+            });
+        });
+        
+        // search form
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        if (searchForm) searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            setState({ searchQuery: searchInput.value });
+            renderApp();
+        });
+    }
+    
+    // INIT
+    startStreams();
+    subscribe(renderApp);
+    renderApp();
+</script>
+</body>
+</html>
