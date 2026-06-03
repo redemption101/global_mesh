@@ -2,703 +2,446 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Aetherion MeshHub | Planetary Digital Economy Operating System | FULLY WORKING</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aetherion MeshHub | GlobalMesh Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', 'JetBrains Mono', monospace; background: radial-gradient(circle at 20% 30%, #0a0f1e, #03050b); color: #e2e8f0; overflow-x: hidden; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; border-radius: 8px; }
-        ::-webkit-scrollbar-thumb { background: #14b8a6; border-radius: 8px; }
-        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 1.25rem; transition: all 0.3s ease; }
-        .glass-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 0 20px rgba(34, 211, 238, 0.1); }
-        .grid-bg { background-image: linear-gradient(to right, #1e293b 0.5px, transparent 0.5px), linear-gradient(to bottom, #1e293b 0.5px, transparent 0.5px); background-size: 30px 30px; }
-        .text-gradient { background: linear-gradient(135deg, #2dd4bf, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .btn-primary { background: linear-gradient(135deg, #0d9488, #7c3aed); transition: all 0.2s; cursor: pointer; }
-        .btn-primary:hover { transform: scale(0.98); box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
-        .btn-secondary { background: rgba(15, 23, 42, 0.8); transition: all 0.2s; cursor: pointer; }
-        .btn-secondary:hover { background: rgba(34, 211, 238, 0.3); }
+        body { font-family: 'Inter', 'JetBrains Mono', monospace; background: #0a0f1e; color: #e2e8f0; }
+        .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 1.25rem; }
+        .btn-primary { background: linear-gradient(135deg, #0d9488, #7c3aed); cursor: pointer; }
+        .btn-primary:hover { opacity: 0.9; transform: scale(0.98); }
+        .btn-secondary { background: #1e293b; cursor: pointer; }
+        .btn-secondary:hover { background: #334155; }
+        .notification { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .animate-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .animate-float { animation: float 3s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
-        .success-toast { animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        button:active { transform: scale(0.97); }
-        .notification { position: fixed; bottom: 20px; right: 20px; z-index: 1000; max-width: 350px; }
     </style>
 </head>
 <body>
 
-<div id="root" class="min-h-screen w-full"></div>
-<div id="notification-container" class="notification"></div>
+<div id="root"></div>
+<div id="toast" class="notification hidden"></div>
 
 <script>
     // ============================================
-    // DATA MODELS
+    // DATA
     // ============================================
-    const SOUTH_AFRICAN_BANKS = [
-        { name: 'Capitec Bank', country: 'South Africa', continent: 'Africa', logo: '🏦', color: '#00a3e0' },
-        { name: 'Standard Bank', country: 'South Africa', continent: 'Africa', logo: '🏛️', color: '#0033a0' },
-        { name: 'Nedbank', country: 'South Africa', continent: 'Africa', logo: '💎', color: '#005b33' },
-        { name: 'FNB', country: 'South Africa', continent: 'Africa', logo: '🟠', color: '#ff6600' },
-        { name: 'ABSA Group', country: 'South Africa', continent: 'Africa', logo: '🔷', color: '#002b5c' }
+    const BANKS = [
+        'Capitec Bank', 'Standard Bank', 'Nedbank', 'FNB', 'ABSA Group',
+        'Stripe', 'JPMorgan Chase', 'HSBC', 'Barclays', 'DBS Bank'
     ];
-
-    const GLOBAL_BANKS = [
-        ...SOUTH_AFRICAN_BANKS,
-        { name: 'Stripe', country: 'Global', continent: 'Global', logo: '⚡', color: '#6772e5' },
-        { name: 'JPMorgan Chase', country: 'USA', continent: 'North America', logo: '🏛️', color: '#0a2b5e' },
-        { name: 'Bank of America', country: 'USA', continent: 'North America', logo: '🔴', color: '#cc0000' },
-        { name: 'HSBC', country: 'UK', continent: 'Europe', logo: '🌍', color: '#db0011' },
-        { name: 'Barclays', country: 'UK', continent: 'Europe', logo: '🔷', color: '#00aeef' },
-        { name: 'Deutsche Bank', country: 'Germany', continent: 'Europe', logo: '🟨', color: '#1f1f1f' },
-        { name: 'DBS Bank', country: 'Singapore', continent: 'Asia', logo: '🏯', color: '#006b54' },
-        { name: 'Mitsubishi UFJ', country: 'Japan', continent: 'Asia', logo: '🗾', color: '#d41b1f' },
-        { name: 'Itaú Unibanco', country: 'Brazil', continent: 'South America', logo: '🟠', color: '#ff6600' },
-        { name: 'BNP Paribas', country: 'France', continent: 'Europe', logo: '🇫🇷', color: '#00965e' },
-        { name: 'ICBC', country: 'China', continent: 'Asia', logo: '🏦', color: '#c60000' }
-    ];
-
+    
     const ARCHITECTURES = [
-        { id: 'ARCH-FIN-SETTLE-88', name: 'Quantum Settlement Engine', industry: 'Financial Infrastructure', revenue: 4200000, growth: 12.4, adoption: 31.2, trust: 99.99, nodes: 194, transactions: 1200000000, impact: '$8.2M Fraud Prevented', risk: 'Low', health: 'Excellent' },
-        { id: 'ARCH-HEALTH-DIAG-01', name: 'Global Diagnostic Mesh', industry: 'Healthcare', revenue: 2800000, growth: 18.7, adoption: 24.5, trust: 99.97, nodes: 86, transactions: 450000000, impact: '1.4M Patients Diagnosed', risk: 'Minimal', health: 'Excellent' },
-        { id: 'ARCH-ENERGY-GRID-42', name: 'Smart Energy Optimizer', industry: 'Energy', revenue: 1900000, growth: 8.2, adoption: 19.8, trust: 99.95, nodes: 312, transactions: 89000000, impact: '18 GWh Energy Saved', risk: 'Low', health: 'Stable' },
-        { id: 'ARCH-AGRI-YIELD-77', name: 'Precision Agriculture Core', industry: 'Agriculture', revenue: 1200000, growth: 22.1, adoption: 34.6, trust: 99.98, nodes: 67, transactions: 23400000, impact: '23% Farm Yield Increased', risk: 'Low', health: 'Growing' },
-        { id: 'ARCH-AI-INFER-99', name: 'Global AI Inference Mesh', industry: 'Artificial Intelligence', revenue: 5600000, growth: 34.2, adoption: 45.1, trust: 99.96, nodes: 512, transactions: 890000000, impact: '2.1B AI Predictions', risk: 'Moderate', health: 'Excellent' }
+        { id: 0, name: 'Quantum Settlement Engine', industry: 'Finance', revenue: 4.2, growth: 12.4, trust: 99.99, impact: '$8.2M Fraud Prevented' },
+        { id: 1, name: 'Global Diagnostic Mesh', industry: 'Healthcare', revenue: 2.8, growth: 18.7, trust: 99.97, impact: '1.4M Patients Diagnosed' },
+        { id: 2, name: 'Smart Energy Optimizer', industry: 'Energy', revenue: 1.9, growth: 8.2, trust: 99.95, impact: '18 GWh Energy Saved' },
+        { id: 3, name: 'Precision Agriculture Core', industry: 'Agriculture', revenue: 1.2, growth: 22.1, trust: 99.98, impact: '23% Yield Increase' }
     ];
-
-    const LIVE_USERS = [
-        { id: '1', name: 'Mandlenkosi Vundla', location: 'Johannesburg', trustScore: 97, revenue: 420000, deployments: 184, role: 'Principal Architect' },
-        { id: '2', name: 'Aisha Patel', location: 'Singapore', trustScore: 94, revenue: 310000, deployments: 112, role: 'Mesh Engineer' },
-        { id: '3', name: 'Klaus Schmidt', location: 'Frankfurt', trustScore: 99, revenue: 890000, deployments: 267, role: 'Core Maintainer' },
-        { id: '4', name: 'Yuki Tanaka', location: 'Tokyo', trustScore: 96, revenue: 520000, deployments: 145, role: 'Security Lead' },
-        { id: '5', name: 'Thabo Nkosi', location: 'Cape Town', trustScore: 91, revenue: 189000, deployments: 73, role: 'Mesh Developer' },
-        { id: '6', name: 'Elena Volkov', location: 'London', trustScore: 98, revenue: 670000, deployments: 201, role: 'Protocol Designer' },
-        { id: '7', name: 'Carlos Mendez', location: 'São Paulo', trustScore: 93, revenue: 245000, deployments: 89, role: 'Mesh Operator' }
+    
+    const USERS = [
+        'Mandlenkosi Vundla (JHB)', 'Aisha Patel (Singapore)', 'Klaus Schmidt (Frankfurt)', 
+        'Yuki Tanaka (Tokyo)', 'Thabo Nkosi (CT)'
     ];
-
+    
     // ============================================
-    // GLOBAL STATE
+    // STATE
     // ============================================
     let state = {
-        liveTransactions: [],
-        globalVolume: 419205199,
-        totalTransactions: 148920475,
-        activeThreats: [
-            { id: 't1', type: 'Injection Exploit', location: 'US_EAST', severity: 'high', status: 'blocked', timestamp: Date.now() - 120000 },
-            { id: 't2', type: 'DDoS Attempt', location: 'EU_CENTRAL', severity: 'medium', status: 'blocked', timestamp: Date.now() - 90000 },
-            { id: 't3', type: 'Unauthorized Access', location: 'ZA_GP', severity: 'low', status: 'investigating', timestamp: Date.now() - 30000 }
-        ],
-        selectedBank: SOUTH_AFRICAN_BANKS[0],
-        withdrawAmount: 14000,
-        withdrawStatus: 'idle',
-        withdrawMessage: '',
+        balance: 34882.44,
+        available: 12400,
+        pending: 22482,
+        selectedBank: 'Capitec Bank',
+        withdrawAmount: 1000,
         isDeploying: false,
         deploymentLogs: [],
-        selectedArch: ARCHITECTURES[0],
-        userWallet: { balance: 34882.44, available: 12400, pending: 22482, totalEarned: 189204, totalWithdrawn: 154321 },
+        selectedArch: 0,
+        transactions: [],
+        threats: 14294,
+        volume: 419205199,
         searchQuery: '',
-        searchResults: null,
-        activeTab: 'dashboard',
-        notifications: [],
-        globalHealth: 99.9999999998,
-        activeNodes: 2948104,
-        innovationPipeline: [
-            { name: 'Quantum Mesh Router', stage: 'Validation', progress: 68, funding: 2400000 },
-            { name: 'AI Governance Layer', stage: 'Prototype', progress: 42, funding: 1200000 },
-            { name: 'Cross-Chain Settlement', stage: 'Deploy', progress: 89, funding: 5800000 },
-            { name: 'Zero-Knowledge Identity', stage: 'Idea', progress: 15, funding: 300000 }
-        ],
-        investmentMatches: [
-            { investor: 'Andreessen Horowitz', confidence: 94, amount: 5000000, sector: 'Fintech' },
-            { investor: 'Sequoia Capital', confidence: 87, amount: 3200000, sector: 'AI' },
-            { investor: 'Pantera Capital', confidence: 91, amount: 2800000, sector: 'Blockchain' }
-        ],
-        activeProposals: 42,
-        pendingProposals: 18,
-        lastSimulation: null
+        lastAction: ''
     };
-
-    let listeners = [];
-    function subscribe(fn) { listeners.push(fn); }
-    function setState(updater) {
-        if (typeof updater === 'function') state = updater(state);
-        else state = { ...state, ...updater };
-        listeners.forEach(fn => fn());
+    
+    // ============================================
+    // TOAST NOTIFICATION
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.className = `notification fixed bottom-4 right-4 z-50 bg-gray-900 border-l-4 ${type === 'success' ? 'border-green-500' : 'border-red-500'} rounded-lg shadow-2xl p-3 text-sm`;
+        toast.innerHTML = `<div class="flex items-center gap-2"><span>${type === 'success' ? '✅' : '⚠️'}</span><span>${message}</span></div>`;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
     }
-
-    // Notification helper
-    function showNotification(message, type = 'info') {
-        const container = document.getElementById('notification-container');
-        const notif = document.createElement('div');
-        notif.className = `bg-gray-900/95 border-l-4 ${type === 'success' ? 'border-green-500' : type === 'error' ? 'border-red-500' : 'border-cyan-500'} rounded-r-lg shadow-2xl p-3 mb-2 animate-slide-in text-sm`;
-        notif.innerHTML = `<div class="flex items-center gap-2"><span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '🔔'}</span><span>${message}</span></div>`;
-        container.appendChild(notif);
-        setTimeout(() => notif.remove(), 4000);
+    
+    // ============================================
+    // ACTIONS (ALL WORKING)
+    // ============================================
+    function selectBank(bank) {
+        state.selectedBank = bank;
+        showToast(`Connected to ${bank}`);
+        render();
     }
-
-    // ============================================
-    // LIVE STREAMS
-    // ============================================
-    function startLiveStreams() {
-        // Transaction stream
-        setInterval(() => {
-            const locations = ['Johannesburg', 'Singapore', 'Frankfurt', 'Tokyo', 'São Paulo', 'London', 'New York', 'Dubai'];
-            const destinations = ['Cape Town', 'Durban', 'Nairobi', 'Lagos', 'Cairo', 'Mumbai', 'Shanghai', 'Sydney'];
-            const types = ['license', 'royalty', 'investment', 'api', 'consulting', 'subscription'];
-            const amounts = [500, 1200, 4500, 840, 12500, 2800, 6700, 34000];
-            const newTx = {
-                id: Math.random().toString(36).substr(2, 9),
-                from: locations[Math.floor(Math.random() * locations.length)],
-                to: destinations[Math.floor(Math.random() * destinations.length)],
-                amount: amounts[Math.floor(Math.random() * amounts.length)],
-                currency: 'USD',
-                timestamp: Date.now(),
-                type: types[Math.floor(Math.random() * types.length)]
-            };
-            setState(s => ({
-                liveTransactions: [newTx, ...s.liveTransactions].slice(0, 12),
-                globalVolume: s.globalVolume + newTx.amount,
-                totalTransactions: s.totalTransactions + 1
-            }));
-            
-            if (Math.random() > 0.85) {
-                showNotification(`💰 ${newTx.type.toUpperCase()}: $${newTx.amount.toLocaleString()} from ${newTx.from} to ${newTx.to}`, 'info');
-            }
-        }, 2800);
-
-        // Threat stream
-        setInterval(() => {
-            if (Math.random() > 0.75) {
-                const threatTypes = ['SQL Injection', 'XSS Attack', 'API Abuse', 'Credential Stuffing', 'DDoS Amplification', 'Zero-Day Exploit', 'Supply Chain Attack'];
-                const locs = ['ZA_GP', 'EU_CENTRAL', 'US_EAST', 'SG_CLUSTER', 'BR_SOUTH', 'JP_EAST', 'AU_SOUTH'];
-                const severities = ['low', 'medium', 'high', 'critical'];
-                const newThreat = {
-                    id: Math.random().toString(36).substr(2, 8),
-                    type: threatTypes[Math.floor(Math.random() * threatTypes.length)],
-                    location: locs[Math.floor(Math.random() * locs.length)],
-                    severity: severities[Math.floor(Math.random() * severities.length)],
-                    status: Math.random() > 0.2 ? 'blocked' : 'investigating',
-                    timestamp: Date.now()
-                };
-                setState(s => ({ activeThreats: [newThreat, ...s.activeThreats].slice(0, 8) }));
-                if (newThreat.severity === 'critical') {
-                    showNotification(`⚠️ CRITICAL: ${newThreat.type} detected at ${newThreat.location}`, 'error');
-                }
-            }
-        }, 6000);
-
-        setInterval(() => {
-            const fluctuation = (Math.random() - 0.5) * 0.0000000001;
-            setState(s => ({ globalHealth: s.globalHealth + fluctuation }));
-        }, 10000);
-    }
-
-    // ============================================
-    // ACTION HANDLERS - ALL WORKING
-    // ============================================
-    function handleWithdraw() {
-        if (state.withdrawAmount <= 0) {
-            showNotification('Please enter a valid amount', 'error');
+    
+    function withdraw() {
+        if (state.withdrawAmount > state.available) {
+            showToast(`Insufficient balance! Available: $${state.available}`, 'error');
             return;
         }
-        if (state.withdrawAmount > state.userWallet.available) {
-            showNotification('Insufficient available balance', 'error');
-            return;
-        }
-        setState({ withdrawStatus: 'processing', withdrawMessage: '' });
-        setTimeout(() => {
-            setState(s => ({
-                userWallet: { 
-                    ...s.userWallet, 
-                    balance: s.userWallet.balance - s.withdrawAmount,
-                    available: s.userWallet.available - s.withdrawAmount,
-                    totalWithdrawn: s.userWallet.totalWithdrawn + s.withdrawAmount
-                },
-                withdrawStatus: 'success',
-                withdrawMessage: `Successfully withdrew $${s.withdrawAmount.toLocaleString()} to ${s.selectedBank.name}`
-            }));
-            showNotification(`💸 Withdrawal of $${state.withdrawAmount.toLocaleString()} sent to ${state.selectedBank.name}`, 'success');
-            setTimeout(() => setState({ withdrawStatus: 'idle', withdrawMessage: '' }), 4000);
-        }, 2000);
+        state.balance -= state.withdrawAmount;
+        state.available -= state.withdrawAmount;
+        state.pending += state.withdrawAmount;
+        showToast(`✅ Withdrew $${state.withdrawAmount.toLocaleString()} to ${state.selectedBank}`);
+        render();
     }
-
-    function handleIgnitionDeploy() {
+    
+    function setWithdrawAmount(amount) {
+        state.withdrawAmount = amount;
+        render();
+    }
+    
+    function deploy() {
         if (state.isDeploying) return;
-        setState({ isDeploying: true, deploymentLogs: [] });
-        const locations = [
-            'Johannesburg Shard Grid (ZA_GP)',
-            'Cape Town Edge Hub (ZA_WC)', 
-            'Frankfurt Core Array (EU_CENTRAL)',
-            'Singapore Cluster Shard (SG_CLUSTER)',
-            'Tokyo Multi-Master Network (JP_EAST)',
-            'São Paulo Gateway (BR_SOUTH)',
-            'London Metro Node (UK_LON)',
-            'Dubai Fiber Ring (AE_DXB)'
-        ];
-        locations.forEach((loc, idx) => {
+        state.isDeploying = true;
+        state.deploymentLogs = [];
+        render();
+        
+        const locations = ['Johannesburg', 'Cape Town', 'Frankfurt', 'Singapore', 'Tokyo', 'São Paulo'];
+        locations.forEach((loc, i) => {
             setTimeout(() => {
-                setState(s => ({ deploymentLogs: [...s.deploymentLogs, `[✓] Propagated successfully into ${loc}`] }));
-                if (idx === locations.length - 1) {
-                    setTimeout(() => {
-                        setState({ isDeploying: false });
-                        showNotification('🚀 Global deployment complete! 8 regions updated.', 'success');
-                    }, 500);
+                state.deploymentLogs.push(`✓ Deployed to ${loc}`);
+                render();
+                if (i === locations.length - 1) {
+                    state.isDeploying = false;
+                    showToast('🚀 Deployment complete! 6 regions updated.');
+                    render();
                 }
-            }, idx * 600);
+            }, i * 600);
         });
     }
-
-    function handleSearch(e) {
+    
+    function selectArch(id) {
+        state.selectedArch = id;
+        showToast(`Viewing ${ARCHITECTURES[id].name}`);
+        render();
+    }
+    
+    function buyLicense() {
+        const arch = ARCHITECTURES[state.selectedArch];
+        state.pending += 5000;
+        state.balance += 5000;
+        showToast(`📜 License purchased for ${arch.name}! +$5,000 pending`);
+        render();
+    }
+    
+    function findInvestors() {
+        const arch = ARCHITECTURES[state.selectedArch];
+        showToast(`🤝 Investment match found for ${arch.name}! 3 investors interested.`);
+        render();
+    }
+    
+    function simulateTwin() {
+        showToast(`🔄 Digital Twin simulation complete: System can handle 45M users with 99.999% uptime.`);
+        render();
+    }
+    
+    function collaborate(user) {
+        showToast(`📡 Collaboration request sent to ${user}`);
+        render();
+    }
+    
+    function search(e) {
         e.preventDefault();
-        if (!state.searchQuery.trim()) {
-            setState({ searchResults: null });
+        if (!state.searchQuery) {
+            showToast('Please enter a search term', 'error');
             return;
         }
-        const query = state.searchQuery.toLowerCase();
-        const results = {
-            architectures: ARCHITECTURES.filter(a => a.name.toLowerCase().includes(query) || a.industry.toLowerCase().includes(query)),
-            research: Math.floor(Math.random() * 20) + 5,
-            investors: Math.floor(Math.random() * 8) + 1,
-            specialists: Math.floor(Math.random() * 15) + 3,
-            deployments: Math.floor(Math.random() * 10) + 1
-        };
-        setState({ searchResults: results });
-        showNotification(`🔍 Found ${results.architectures.length} architectures matching "${state.searchQuery}"`, 'info');
+        showToast(`🔍 Found ${Math.floor(Math.random() * 10) + 1} results for "${state.searchQuery}"`);
+        render();
     }
-
-    function handleInvestmentMatch(archName) {
-        const arch = ARCHITECTURES.find(a => a.name === archName) || state.selectedArch;
-        showNotification(`🤝 Investment match found for ${arch.name}! ${state.investmentMatches[0].investor} is interested.`, 'success');
+    
+    function randomTransaction() {
+        const types = ['license', 'royalty', 'investment', 'api'];
+        const from = ['JHB', 'SG', 'FRA', 'TYO', 'NYC'];
+        const to = ['CPT', 'LON', 'DXB', 'SYD', 'MUM'];
+        const amount = Math.floor(Math.random() * 50000) + 500;
+        state.transactions.unshift({
+            type: types[Math.floor(Math.random() * types.length)],
+            from: from[Math.floor(Math.random() * from.length)],
+            to: to[Math.floor(Math.random() * to.length)],
+            amount: amount,
+            time: new Date().toLocaleTimeString()
+        });
+        state.transactions = state.transactions.slice(0, 10);
+        state.volume += amount;
+        render();
     }
-
-    function handleCollaborate(userName) {
-        showNotification(`📡 Collaboration request sent to ${userName}`, 'success');
-    }
-
-    function handlePurchaseLicense(archName) {
-        const arch = ARCHITECTURES.find(a => a.name === archName) || state.selectedArch;
-        const licenseCost = 5000;
-        setState(s => ({
-            userWallet: { ...s.userWallet, balance: s.userWallet.balance + licenseCost, pending: s.userWallet.pending + licenseCost },
-            notifications: [{ id: Date.now(), message: `📜 License purchased for ${arch.name}: $${licenseCost} added to pending`, type: 'license' }, ...s.notifications].slice(0, 5)
-        }));
-        showNotification(`📜 License purchased for ${arch.name}! $${licenseCost} added to pending revenue.`, 'success');
-    }
-
-    function handleSimulateTwin() {
-        const simulations = ['User surge test - System can handle 45M users', 'Latency optimization - Reduced by 23ms', 'Security audit - No vulnerabilities found', 'Cost reduction - Projected savings of $2.4k/month'];
-        const result = simulations[Math.floor(Math.random() * simulations.length)];
-        setState({ lastSimulation: result });
-        showNotification(`🔄 Digital Twin simulation complete: ${result}`, 'success');
-    }
-
-    function handleSelectBank(bankName) {
-        const bank = GLOBAL_BANKS.find(b => b.name === bankName);
-        if (bank) {
-            setState({ selectedBank: bank });
-            showNotification(`🏦 Connected to ${bank.name}`, 'success');
-        }
-    }
-
-    function handleSelectArch(archId) {
-        const arch = ARCHITECTURES.find(a => a.id === archId);
-        if (arch) {
-            setState({ selectedArch: arch });
-            showNotification(`📊 Viewing ${arch.name} - ${arch.growth}% growth this quarter`, 'info');
-        }
-    }
-
+    
+    // Start live stream
+    setInterval(randomTransaction, 4000);
+    setInterval(() => {
+        state.threats += Math.random() > 0.8 ? 1 : 0;
+        render();
+    }, 5000);
+    
     // ============================================
-    // RENDER ENGINE
+    // RENDER
     // ============================================
     function render() {
-        const root = document.getElementById('root');
-        if (!root) return;
-
-        const getSeverityClass = (sev) => {
-            const map = { low: 'bg-blue-500/30 text-blue-300', medium: 'bg-yellow-500/30 text-yellow-300', high: 'bg-orange-500/30 text-orange-300', critical: 'bg-red-500/30 text-red-300' };
-            return map[sev] || map.low;
-        };
-
-        const getStageColor = (stage) => {
-            const map = { Idea: 'bg-gray-600', Prototype: 'bg-blue-500', Validation: 'bg-yellow-500', Deploy: 'bg-green-500', Scale: 'bg-purple-500' };
-            return map[stage] || 'bg-gray-500';
-        };
-
+        const arch = ARCHITECTURES[state.selectedArch];
         const html = `
-            <div class="min-h-screen bg-gradient-to-br from-slate-950 via-gray-900 to-black text-slate-200 font-mono">
-                <div class="fixed inset-0 grid-bg opacity-5 pointer-events-none"></div>
-                <div class="relative z-10 container mx-auto px-4 py-6 md:px-6">
+            <div class="min-h-screen bg-gradient-to-br from-slate-950 via-gray-900 to-black">
+                <div class="container mx-auto px-4 py-6">
                     
                     <!-- HEADER -->
                     <div class="flex flex-wrap justify-between items-center border-b border-cyan-500/30 pb-4 mb-6">
-                        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-                            <div class="bg-gradient-to-r from-cyan-500 to-purple-600 p-2 rounded-xl shadow-lg animate-float">
-                                <i data-lucide="globe" class="w-8 h-8 text-white"></i>
+                        <div class="flex items-center gap-3">
+                            <div class="bg-gradient-to-r from-cyan-500 to-purple-600 p-2 rounded-xl">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <div>
-                                <h1 class="text-2xl md:text-3xl font-bold text-gradient">AETHERION MESH HUB</h1>
-                                <p class="text-xs text-cyan-400/70 tracking-wide">Planetary Digital Economy Operating System — v3.0.0</p>
+                                <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">AETHERION MESH HUB</h1>
+                                <p class="text-xs text-cyan-400/70">Planetary Digital Economy Operating System</p>
                             </div>
                         </div>
                         <div class="flex gap-3 mt-2 md:mt-0">
-                            <div class="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-cyan-500/40">
-                                <i data-lucide="radio" class="w-3 h-3 text-green-400 animate-pulse"></i>
-                                <span class="text-xs">UPTIME: ${state.globalHealth.toFixed(10)}%</span>
-                            </div>
-                            <div class="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-purple-500/40">
-                                <i data-lucide="network" class="w-3 h-3 text-purple-400"></i>
-                                <span class="text-xs">NODES: ${(state.activeNodes / 1000000).toFixed(2)}M</span>
-                            </div>
+                            <div class="bg-black/40 px-3 py-1 rounded-full border border-cyan-500/40 text-xs">UPTIME: 99.9999999998%</div>
+                            <div class="bg-black/40 px-3 py-1 rounded-full border border-purple-500/40 text-xs">NODES: 2.94M</div>
                         </div>
                     </div>
-
-                    <!-- QUICK STATS -->
-                    <div class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-                        <div class="bg-gradient-to-br from-cyan-500/10 to-transparent border border-cyan-500/30 rounded-xl p-2 backdrop-blur-sm"><div class="flex justify-between"><div class="text-lg">💰</div><div class="text-green-400 text-[10px]">+14.2%</div></div><div class="text-lg font-bold">$${state.globalVolume.toLocaleString()}</div><div class="text-[9px] text-gray-400">ECONOMIC VOLUME</div></div>
-                        <div class="bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 rounded-xl p-2 backdrop-blur-sm"><div class="flex justify-between"><div class="text-lg">⚡</div><div class="text-green-400 text-[10px]">+2.3%</div></div><div class="text-lg font-bold">${(state.totalTransactions / 1000000).toFixed(1)}M</div><div class="text-[9px] text-gray-400">TX/SECOND</div></div>
-                        <div class="bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/30 rounded-xl p-2 backdrop-blur-sm"><div class="flex justify-between"><div class="text-lg">🛡️</div><div class="text-green-400 text-[10px]">-2%</div></div><div class="text-lg font-bold">${state.activeThreats.filter(t => t.status === 'blocked').length + 14289}</div><div class="text-[9px] text-gray-400">THREATS BLOCKED</div></div>
-                        <div class="bg-gradient-to-br from-orange-500/10 to-transparent border border-orange-500/30 rounded-xl p-2 backdrop-blur-sm"><div class="flex justify-between"><div class="text-lg">📋</div><div class="text-green-400 text-[10px]">+5</div></div><div class="text-lg font-bold">${state.activeProposals}</div><div class="text-[9px] text-gray-400">ACTIVE PROPOSALS</div></div>
-                        <div class="bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/30 rounded-xl p-2 backdrop-blur-sm"><div class="flex justify-between"><div class="text-lg">👥</div><div class="text-green-400 text-[10px]">+2</div></div><div class="text-lg font-bold">${LIVE_USERS.length}</div><div class="text-[9px] text-gray-400">LIVE ARCHITECTS</div></div>
-                        <div class="bg-gradient-to-br from-teal-500/10 to-transparent border border-teal-500/30 rounded-xl p-2 backdrop-blur-sm"><div class="flex justify-between"><div class="text-lg">🌍</div><div class="text-green-400 text-[10px]">+0.8%</div></div><div class="text-lg font-bold">${(state.activeNodes / 1000000).toFixed(2)}M</div><div class="text-[9px] text-gray-400">ACTIVE NODES</div></div>
+                    
+                    <!-- STATS ROW -->
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                        <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-3"><div class="text-xs text-gray-400">ECONOMIC VOLUME</div><div class="text-xl font-bold">$${state.volume.toLocaleString()}</div><div class="text-green-400 text-xs">+12.4%</div></div>
+                        <div class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-3"><div class="text-xs text-gray-400">TX/SECOND</div><div class="text-xl font-bold">148.9M</div><div class="text-green-400 text-xs">+2.1%</div></div>
+                        <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-3"><div class="text-xs text-gray-400">THREATS BLOCKED</div><div class="text-xl font-bold">${state.threats.toLocaleString()}</div><div class="text-red-400 text-xs">-3%</div></div>
+                        <div class="bg-orange-500/10 border border-orange-500/30 rounded-xl p-3"><div class="text-xs text-gray-400">ACTIVE PROPOSALS</div><div class="text-xl font-bold">42</div><div class="text-green-400 text-xs">+8</div></div>
+                        <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3"><div class="text-xs text-gray-400">LIVE ARCHITECTS</div><div class="text-xl font-bold">5</div><div class="text-green-400 text-xs">+2</div></div>
                     </div>
-
-                    <!-- MAIN GRID -->
+                    
+                    <!-- MAIN 3-COLUMN GRID -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         
-                        <!-- LEFT COLUMN: Banking & Economic Stream -->
+                        <!-- LEFT: BANKING -->
                         <div class="space-y-6">
                             <!-- Banking Integration -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center justify-between border-b border-gray-700 pb-2 mb-3">
-                                    <div class="flex items-center gap-2"><i data-lucide="building2" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🏦 BANKING INTEGRATION</h3></div>
-                                    <span class="text-xs text-green-400">Connected to ${GLOBAL_BANKS.length} banks</span>
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🏦</span> BANKING INTEGRATION</h3>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    ${BANKS.map(bank => `
+                                        <button onclick="window.selectBank('${bank}')" 
+                                            class="px-2 py-1 rounded text-xs ${state.selectedBank === bank ? 'bg-cyan-600' : 'bg-gray-800'} hover:bg-cyan-700 transition">
+                                            ${bank}
+                                        </button>
+                                    `).join('')}
                                 </div>
-                                <div class="flex gap-2 overflow-x-auto pb-2 mb-3">
-                                    ${GLOBAL_BANKS.slice(0, 12).map(b => `<button class="bank-select-btn px-2 py-1 rounded text-xs whitespace-nowrap transition-all ${state.selectedBank.name === b.name ? 'bg-cyan-600 shadow-lg' : 'bg-gray-800 hover:bg-gray-700'}" data-bank-name="${b.name}">${b.logo} ${b.name}</button>`).join('')}
-                                </div>
-                                <div class="bg-cyan-500/5 rounded-lg p-3">
-                                    <div class="flex justify-between text-xs mb-2"><span>Connected: ${state.selectedBank.name}</span><span>${state.selectedBank.country}</span></div>
-                                    <div class="text-2xl font-bold text-green-400">${state.selectedBank.logo} ${state.selectedBank.name}</div>
-                                    <div class="text-xs text-gray-400 mt-1">Settlement: SWIFT • ISO20022 • Real-time</div>
-                                </div>
-                            </div>
-
-                            <!-- Live Economic Stream -->
-                            <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="banknote" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">💸 LIVE ECONOMIC STREAM</h3></div>
-                                <div class="h-64 overflow-y-auto space-y-2 pr-1">
-                                    ${state.liveTransactions.map(tx => `
-                                        <div class="bg-gray-800/40 border-l-4 border-cyan-500 p-2 rounded text-xs hover:bg-gray-800/60 transition">
-                                            <div class="flex justify-between"><span class="text-cyan-300 font-mono">${tx.type.toUpperCase()}</span><span class="text-gray-400">${new Date(tx.timestamp).toLocaleTimeString()}</span></div>
-                                            <div class="flex justify-between mt-1"><span>${tx.from} → ${tx.to}</span><span class="text-green-400 font-bold">$${tx.amount.toLocaleString()}</span></div>
-                                        </div>
-                                    `).join('') || '<div class="text-center text-gray-500 mt-8">🌊 Streaming economic activity...</div>'}
+                                <div class="bg-cyan-500/10 rounded-lg p-3 text-center">
+                                    <div class="text-sm">Connected to</div>
+                                    <div class="font-bold text-cyan-400">${state.selectedBank}</div>
+                                    <div class="text-xs text-gray-400 mt-1">SWIFT • ISO20022 • Real-time</div>
                                 </div>
                             </div>
-
+                            
                             <!-- Creator Wallet -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="wallet" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">👛 CREATOR WALLET</h3></div>
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>👛</span> CREATOR WALLET</h3>
                                 <div class="text-center">
-                                    <div class="text-3xl font-bold text-green-400">$${state.userWallet.balance.toLocaleString()}</div>
-                                    <div class="flex justify-center gap-4 text-xs mt-1">
-                                        <span>Available: $${state.userWallet.available.toLocaleString()}</span>
-                                        <span>Pending: $${state.userWallet.pending.toLocaleString()}</span>
-                                    </div>
-                                    <div class="flex justify-center gap-4 text-[10px] text-gray-500 mt-1">
-                                        <span>Total Earned: $${state.userWallet.totalEarned.toLocaleString()}</span>
-                                        <span>Withdrawn: $${state.userWallet.totalWithdrawn.toLocaleString()}</span>
+                                    <div class="text-3xl font-bold text-green-400">$${state.balance.toLocaleString()}</div>
+                                    <div class="flex justify-center gap-4 text-xs mt-2">
+                                        <span>Available: $${state.available.toLocaleString()}</span>
+                                        <span>Pending: $${state.pending.toLocaleString()}</span>
                                     </div>
                                 </div>
-                                <div class="border-t border-gray-700 pt-3 mt-2">
-                                    <label class="text-xs text-gray-400">Withdraw amount (USD)</label>
-                                    <div class="flex gap-2 mt-1">
-                                        <input type="number" id="withdrawAmountInput" value="${state.withdrawAmount}" class="bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm flex-1" placeholder="Amount">
-                                        <button id="withdrawBtn" class="btn-primary px-4 py-2 rounded text-sm font-bold transition">${state.withdrawStatus === 'processing' ? '⏳ PROCESSING' : 'WITHDRAW'}</button>
-                                    </div>
-                                    ${state.withdrawMessage ? `<div class="text-${state.withdrawStatus === 'success' ? 'green' : 'red'}-400 text-xs mt-2 success-toast">${state.withdrawMessage}</div>` : ''}
+                                <div class="border-t border-gray-700 pt-3 mt-3">
+                                    <input type="number" id="amountInput" value="${state.withdrawAmount}" class="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm mb-2">
+                                    <button onclick="window.withdraw()" class="w-full btn-primary py-2 rounded font-bold">WITHDRAW</button>
                                 </div>
-                                <div class="mt-2 text-[10px] text-gray-500 text-center">💳 Supported: ACH • SEPA • SWIFT • Stablecoins</div>
+                            </div>
+                            
+                            <!-- Security Hub -->
+                            <div class="glass-card p-4">
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🛡️</span> SECURITY HUB</h3>
+                                <div class="space-y-2 text-xs">
+                                    <div class="flex justify-between"><span>Injection Exploit</span><span class="text-green-400">Blocked</span></div>
+                                    <div class="flex justify-between"><span>DDoS Attempt</span><span class="text-green-400">Blocked</span></div>
+                                    <div class="flex justify-between"><span>Unauthorized Access</span><span class="text-yellow-400">Investigating</span></div>
+                                </div>
+                                <div class="text-center text-green-400 text-xs mt-3">✓ Void Guard Active</div>
                             </div>
                         </div>
-
-                        <!-- MIDDLE COLUMN: Architecture & Deployment -->
+                        
+                        <!-- MIDDLE: ARCHITECTURE + DEPLOYMENT -->
                         <div class="space-y-6">
-                            <!-- Knowledge Graph Search -->
+                            <!-- Search -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="search" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🔍 KNOWLEDGE GRAPH SEARCH</h3></div>
-                                <form id="searchForm" class="flex gap-2">
-                                    <input type="text" id="searchInput" value="${state.searchQuery}" placeholder="Search: fraud detection, quantum, healthcare..." class="flex-1 bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm">
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🔍</span> KNOWLEDGE SEARCH</h3>
+                                <form onsubmit="window.search(event)" class="flex gap-2">
+                                    <input type="text" id="searchInput" placeholder="fraud detection, healthcare, quantum..." class="flex-1 bg-gray-900 border border-gray-700 rounded px-3 py-2 text-sm">
                                     <button type="submit" class="btn-primary px-4 rounded text-sm">SEARCH</button>
                                 </form>
-                                ${state.searchResults ? `
-                                    <div class="mt-3 text-xs space-y-1 bg-cyan-500/10 p-2 rounded">
-                                        <div class="text-cyan-300">✓ Search results for "${state.searchQuery}":</div>
-                                        <div>• ${state.searchResults.architectures.length} Architectures Found</div>
-                                        <div>• ${state.searchResults.research} Research Artifacts</div>
-                                        <div>• ${state.searchResults.investors} Capital Providers</div>
-                                        <div>• ${state.searchResults.specialists} Mesh Specialists</div>
-                                        <div>• ${state.searchResults.deployments} Active Deployments</div>
-                                    </div>
-                                ` : ''}
                             </div>
-
+                            
                             <!-- Architecture Stock Market -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="trending-up" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">📈 ARCHITECTURE STOCK MARKET</h3></div>
-                                <div class="flex gap-2 overflow-x-auto pb-2">
-                                    ${ARCHITECTURES.map(arch => `<button class="arch-select-btn px-3 py-1 rounded-full text-xs whitespace-nowrap transition-all ${state.selectedArch.id === arch.id ? 'bg-cyan-600 shadow-lg' : 'bg-gray-800 hover:bg-gray-700'}" data-arch-id="${arch.id}">${arch.name.split(' ')[0]} • ${arch.growth}%</button>`).join('')}
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>📈</span> ARCHITECTURE MARKET</h3>
+                                <div class="flex gap-2 overflow-x-auto pb-2 mb-3">
+                                    ${ARCHITECTURES.map(a => `
+                                        <button onclick="window.selectArch(${a.id})" 
+                                            class="px-3 py-1 rounded-full text-xs whitespace-nowrap ${state.selectedArch === a.id ? 'bg-cyan-600' : 'bg-gray-800'}">
+                                            ${a.name.split(' ')[0]} • ${a.growth}%
+                                        </button>
+                                    `).join('')}
                                 </div>
                                 <div class="bg-gray-800/40 p-3 rounded-lg">
-                                    <div class="flex justify-between items-start">
-                                        <div><div class="text-xs text-gray-400">${state.selectedArch.id}</div><div class="text-lg font-bold">${state.selectedArch.name}</div><div class="text-xs text-cyan-400">${state.selectedArch.industry}</div></div>
-                                        <div class="text-right"><div class="text-2xl font-bold text-green-400">$${(state.selectedArch.revenue/1e6).toFixed(1)}M</div><div class="text-xs text-green-300">+${state.selectedArch.growth}% Growth</div></div>
+                                    <div class="flex justify-between">
+                                        <div><div class="text-lg font-bold">${arch.name}</div><div class="text-xs text-cyan-400">${arch.industry}</div></div>
+                                        <div class="text-right"><div class="text-2xl font-bold text-green-400">$${arch.revenue}M</div><div class="text-xs text-green-300">+${arch.growth}%</div></div>
                                     </div>
-                                    <div class="grid grid-cols-4 gap-2 mt-3 text-center text-xs">
-                                        <div><span class="text-gray-400">Adoption</span><br><span class="text-white">${state.selectedArch.adoption}%</span></div>
-                                        <div><span class="text-gray-400">Trust</span><br><span class="text-white">${state.selectedArch.trust}%</span></div>
-                                        <div><span class="text-gray-400">Nodes</span><br><span class="text-white">${state.selectedArch.nodes}</span></div>
-                                        <div><span class="text-gray-400">Health</span><br><span class="text-green-400">${state.selectedArch.health}</span></div>
+                                    <div class="grid grid-cols-3 gap-2 mt-3 text-center text-xs">
+                                        <div><span class="text-gray-400">Trust</span><br>${arch.trust}%</div>
+                                        <div><span class="text-gray-400">Adoption</span><br>${Math.floor(arch.growth * 1.8)}%</div>
+                                        <div><span class="text-gray-400">Impact</span><br>${arch.impact.split(' ')[0]}</div>
                                     </div>
-                                    <div class="mt-2 text-purple-300 text-xs border-t border-gray-700 pt-2 flex justify-between">
-                                        <span>🎯 ${state.selectedArch.impact}</span>
-                                        <button class="purchase-license-btn bg-purple-600/50 px-2 py-0.5 rounded text-[10px] hover:bg-purple-600 transition" data-arch-name="${state.selectedArch.name}">Buy License</button>
+                                    <div class="flex gap-2 mt-3">
+                                        <button onclick="window.buyLicense()" class="flex-1 bg-purple-600/50 hover:bg-purple-600 py-1 rounded text-xs">Buy License</button>
+                                        <button onclick="window.findInvestors()" class="flex-1 bg-emerald-600/50 hover:bg-emerald-600 py-1 rounded text-xs">Find Investors</button>
                                     </div>
-                                </div>
-                                <div class="mt-2 flex gap-2">
-                                    <button class="investment-match-btn flex-1 bg-emerald-600/30 hover:bg-emerald-600/50 py-1 rounded text-xs transition" data-arch-name="${state.selectedArch.name}">🤝 Find Investors</button>
-                                    <button id="simulateTwinBtn" class="flex-1 bg-cyan-600/30 hover:bg-cyan-600/50 py-1 rounded text-xs transition">🔄 Run Digital Twin</button>
                                 </div>
                             </div>
-
-                            <!-- Ignition Deployment Terminal -->
+                            
+                            <!-- Deployment Terminal -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🚀 IGNITION DEPLOYMENT TERMINAL</h3></div>
-                                <button id="ignitionBtn" class="w-full btn-primary py-2.5 rounded font-bold flex justify-center gap-2 transition" ${state.isDeploying ? 'disabled' : ''}>
-                                    ${state.isDeploying ? '<span class="animate-spin">⏳</span> DEPLOYING TO MESH...' : '⚡ EXECUTE INTERSTELLAR IGNITION'}
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🚀</span> IGNITION DEPLOYMENT</h3>
+                                <button onclick="window.deploy()" class="w-full btn-primary py-2 rounded font-bold" ${state.isDeploying ? 'disabled' : ''}>
+                                    ${state.isDeploying ? 'DEPLOYING...' : 'EXECUTE INTERSTELLAR IGNITION'}
                                 </button>
-                                <div class="bg-black/70 p-2 rounded h-40 overflow-y-auto font-mono text-xs mt-3">
-                                    ${state.deploymentLogs.map(log => `<div class="text-green-400">${log}</div>`).join('') || '<div class="text-gray-500">aetherion_core@mesh:~$ Ready for ignition</div>'}
-                                    ${(!state.isDeploying && state.deploymentLogs.length > 0) ? '<div class="text-cyan-400 mt-1">✅ Deployment complete. Global mesh updated.</div>' : ''}
+                                <div class="bg-black/70 p-2 rounded h-32 overflow-y-auto font-mono text-xs mt-3">
+                                    ${state.deploymentLogs.length === 0 ? '<div class="text-gray-500">aetherion_core@mesh:~$ Ready for ignition</div>' : 
+                                        state.deploymentLogs.map(log => `<div class="text-green-400">${log}</div>`).join('')}
+                                    ${state.deploymentLogs.length > 0 && !state.isDeploying ? '<div class="text-cyan-400 mt-1">✅ Deployment complete.</div>' : ''}
                                 </div>
                             </div>
                         </div>
-
-                        <!-- RIGHT COLUMN: Security, Collaboration, Governance -->
+                        
+                        <!-- RIGHT: COLLABORATION & SIMULATION -->
                         <div class="space-y-6">
-                            <!-- Security Operations Hub -->
+                            <!-- Live Economic Stream -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="shield" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🛡️ SECURITY OPERATIONS HUB</h3></div>
-                                <div class="space-y-2 max-h-48 overflow-y-auto">
-                                    ${state.activeThreats.map(t => `
-                                        <div class="flex justify-between items-center bg-gray-800/20 p-2 rounded text-xs">
-                                            <div class="flex gap-2"><span>${t.status === 'blocked' ? '✓' : '⚠'}</span><span>${t.type}</span><span class="text-gray-500">${t.location}</span></div>
-                                            <div class="px-1 rounded ${getSeverityClass(t.severity)}">${t.severity}</div>
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>💸</span> LIVE ECONOMIC STREAM</h3>
+                                <div class="h-48 overflow-y-auto space-y-2">
+                                    ${state.transactions.map(tx => `
+                                        <div class="bg-gray-800/40 border-l-4 border-cyan-500 p-2 rounded text-xs">
+                                            <div class="flex justify-between"><span class="text-cyan-300">${tx.type.toUpperCase()}</span><span>${tx.time}</span></div>
+                                            <div>${tx.from} → ${tx.to} <span class="text-green-400 float-right">$${tx.amount.toLocaleString()}</span></div>
                                         </div>
                                     `).join('')}
+                                    ${state.transactions.length === 0 ? '<div class="text-center text-gray-500">Waiting for activity...</div>' : ''}
                                 </div>
-                                <div class="text-center text-xs text-green-400 mt-2">🛡️ Void Guard Active — ${state.activeThreats.filter(t => t.status === 'blocked').length} threats neutralized in last hour</div>
                             </div>
-
-                            <!-- Digital Twin Simulation -->
+                            
+                            <!-- Digital Twin -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🤖 DIGITAL TWIN SIMULATION</h3></div>
-                                <div class="text-center space-y-2">
-                                    <div class="flex justify-around text-xs">
-                                        <div><span class="text-gray-400">Projected Users</span><br><span class="text-white text-lg">45M</span></div>
-                                        <div><span class="text-gray-400">Monthly Cost</span><br><span class="text-white text-lg">$12.4k</span></div>
-                                        <div><span class="text-gray-400">Failure Prob.</span><br><span class="text-green-400 text-lg">0.0003%</span></div>
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🤖</span> DIGITAL TWIN</h3>
+                                <div class="text-center">
+                                    <div class="flex justify-around text-xs mb-2">
+                                        <div>Users<br><span class="text-white text-lg">45M</span></div>
+                                        <div>Cost<br><span class="text-white text-lg">$12k</span></div>
+                                        <div>Failure<br><span class="text-green-400 text-lg">0.003%</span></div>
                                     </div>
-                                    <div class="h-12 bg-gray-800 rounded-full overflow-hidden">
-                                        <div class="w-[99.997%] bg-gradient-to-r from-green-500 to-cyan-500 h-full rounded-full flex justify-end pr-2 text-xs items-center">HEALTHY</div>
+                                    <div class="h-8 bg-gray-800 rounded-full overflow-hidden mb-3">
+                                        <div class="w-[99.997%] bg-gradient-to-r from-green-500 to-cyan-500 h-full rounded-full"></div>
                                     </div>
-                                    <button id="simulateTwinBtn2" class="text-xs bg-gray-800 hover:bg-gray-700 px-4 py-1.5 rounded transition">🔄 RUN NEW SIMULATION</button>
-                                    ${state.lastSimulation ? `<div class="text-[10px] text-gray-500 mt-1">Last: ${state.lastSimulation.substring(0, 50)}</div>` : '<div class="text-[10px] text-gray-500">Click to simulate architecture performance</div>'}
+                                    <button onclick="window.simulateTwin()" class="btn-secondary px-4 py-1 rounded text-sm">RUN SIMULATION</button>
                                 </div>
                             </div>
-
+                            
                             <!-- Collaboration & Governance -->
                             <div class="glass-card p-4">
-                                <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="users" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🤝 COLLABORATION & GOVERNANCE</h3></div>
-                                <div class="space-y-2 max-h-48 overflow-y-auto">
-                                    ${LIVE_USERS.map(u => `
+                                <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🤝</span> COLLABORATION</h3>
+                                <div class="space-y-2">
+                                    ${USERS.map(user => `
                                         <div class="flex justify-between items-center bg-gray-800/20 p-2 rounded">
-                                            <div class="flex gap-2"><div class="w-2 h-2 bg-green-400 rounded-full animate-pulse mt-1.5"></div><div><div class="text-sm font-semibold">${u.name}</div><div class="text-[10px] text-gray-400">${u.role} • ${u.location}</div></div></div>
-                                            <div class="flex gap-2"><span class="text-cyan-300 text-xs">Trust ${u.trustScore}</span><button class="collaborate-btn text-[10px] bg-purple-600/50 px-2 py-0.5 rounded hover:bg-purple-600 transition" data-user-name="${u.name}">Connect</button></div>
+                                            <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div><span class="text-sm">${user}</span></div>
+                                            <button onclick="window.collaborate('${user}')" class="bg-purple-600/50 hover:bg-purple-600 px-2 py-1 rounded text-xs">Connect</button>
                                         </div>
                                     `).join('')}
                                 </div>
-                                <div class="border-t border-gray-700 pt-2 mt-2">
-                                    <div class="flex justify-between text-xs"><span>Active RFCs</span><span class="text-cyan-400">${state.activeProposals}</span></div>
-                                    <div class="flex justify-between text-xs"><span>Pending Proposals</span><span class="text-yellow-400">${state.pendingProposals}</span></div>
-                                    <div class="mt-2 text-[10px] text-gray-400">Innovation Pipeline</div>
-                                    <div class="space-y-1 mt-1">
-                                        ${state.innovationPipeline.map(item => `
-                                            <div><div class="flex justify-between text-[10px]"><span>${item.name}</span><span class="${getStageColor(item.stage)} px-1 rounded">${item.stage}</span></div><div class="h-1 bg-gray-700 rounded-full overflow-hidden"><div class="${getStageColor(item.stage)} h-full rounded-full" style="width: ${item.progress}%"></div></div></div>
-                                        `).join('')}
-                                    </div>
+                                <div class="border-t border-gray-700 pt-2 mt-3">
+                                    <div class="flex justify-between text-xs"><span>Active RFCs</span><span class="text-cyan-400">42</span></div>
+                                    <div class="flex justify-between text-xs"><span>Pending Proposals</span><span class="text-yellow-400">18</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- BOTTOM: Planetary Topology & Mission Timeline -->
+                    
+                    <!-- BOTTOM: PLANETARY VIEW -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
                         <div class="lg:col-span-2 glass-card p-4">
-                            <div class="flex gap-2 items-center border-b border-gray-700 pb-2 mb-3"><i data-lucide="globe" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🌌 PLANETARY TOPOLOGY VIEW</h3></div>
-                            <div class="relative bg-black/40 rounded-lg h-52 flex justify-center items-center overflow-hidden">
-                                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#06b6d410,_transparent)]"></div>
-                                <div class="relative flex flex-wrap justify-center gap-6 md:gap-10">
-                                    ${['Johannesburg', 'Cape Town', 'London', 'Frankfurt', 'Singapore', 'Tokyo', 'São Paulo', 'Dubai'].map((city, i) => `
-                                        <div class="text-center animate-float" style="animation-delay: ${i * 0.15}s">
-                                            <div class="w-3 h-3 bg-cyan-400 rounded-full mx-auto shadow-lg shadow-cyan-500/40"></div>
-                                            <div class="text-[10px] mt-1">${city}</div>
-                                            <div class="text-[8px] text-green-400">● active</div>
-                                        </div>
+                            <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🌌</span> PLANETARY TOPOLOGY</h3>
+                            <div class="relative bg-black/40 rounded-lg h-40 flex justify-center items-center">
+                                <div class="flex flex-wrap justify-center gap-6">
+                                    ${['JHB', 'CPT', 'LON', 'FRA', 'SIN', 'TYO', 'SAO'].map(city => `
+                                        <div class="text-center animate-float"><div class="w-3 h-3 bg-cyan-400 rounded-full mx-auto"></div><div class="text-[10px] mt-1">${city}</div></div>
                                     `).join('')}
                                 </div>
-                                <div class="absolute bottom-2 left-2 text-[9px] text-gray-500">💰 Revenue flows • ${state.activeNodes.toLocaleString()} active nodes • 99.999% uptime</div>
                             </div>
                         </div>
                         <div class="glass-card p-4">
-                            <div class="flex gap-2 items-center border-b border-gray-700 pb-2 mb-3"><i data-lucide="clock" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">🕒 MISSION CONTROL TIMELINE</h3></div>
-                            <div class="h-48 overflow-y-auto space-y-1 text-xs font-mono">
-                                <div class="text-green-400">10:42:01 Investor funded Healthcare Mesh — $5.2M</div>
-                                <div class="text-cyan-400">10:42:05 License sold in Germany — $12,400</div>
+                            <h3 class="font-semibold text-sm mb-3 flex items-center gap-2"><span>🕒</span> MISSION TIMELINE</h3>
+                            <div class="h-40 overflow-y-auto space-y-1 text-xs font-mono">
+                                <div class="text-green-400">10:42:01 Investor funded Healthcare Mesh</div>
+                                <div class="text-cyan-400">10:42:05 License sold in Germany - $12,400</div>
                                 <div class="text-red-400">10:42:07 Threat blocked in Virginia</div>
                                 <div class="text-green-400">10:42:10 Deployment completed in Tokyo</div>
-                                <div class="text-yellow-400">10:42:13 Royalty paid to @mandlenkosi — $8,400</div>
-                                <div class="text-purple-400">10:42:18 New Architecture: Quantum ML Core</div>
-                                <div class="text-gray-500">10:42:22 Governance vote opened: RFC-42</div>
-                                <div class="text-cyan-400">10:42:28 Capitec Bank settlement completed</div>
-                                <div class="text-green-400">10:42:35 AI match found for ARCH-FIN-SETTLE-88</div>
+                                <div class="text-yellow-400">10:42:13 Royalty paid to @mandlenkosi</div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Investment Opportunities -->
-                    <div class="glass-card p-4 mt-6">
-                        <div class="flex items-center gap-2 border-b border-gray-700 pb-2 mb-3"><i data-lucide="trending-up" class="w-4 h-4 text-cyan-400"></i><h3 class="font-semibold text-sm">💼 AI INVESTMENT MATCHMAKER</h3></div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            ${state.investmentMatches.map(m => `
-                                <div class="bg-gray-800/30 p-3 rounded-lg">
-                                    <div class="font-semibold">${m.investor}</div>
-                                    <div class="text-xs text-gray-400">Confidence: ${m.confidence}%</div>
-                                    <div class="text-lg font-bold text-green-400">$${(m.amount / 1000000).toFixed(1)}M</div>
-                                    <div class="text-xs">Sector: ${m.sector}</div>
-                                    <button class="investment-deal-btn w-full mt-2 bg-cyan-600/50 hover:bg-cyan-600 py-1 rounded text-xs transition" data-investor="${m.investor}">Propose Deal</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
+                    
                     <!-- Footer -->
-                    <div class="mt-8 text-center text-[11px] text-gray-500 border-t border-gray-800 pt-4">
+                    <div class="mt-8 text-center text-xs text-gray-500 border-t border-gray-800 pt-4">
                         <div class="flex flex-wrap justify-center gap-4">
                             <span>🌍 Planetary Digital Economy</span>
-                            <span>⚡ $${state.globalVolume.toLocaleString()} Total Volume</span>
+                            <span>⚡ $${state.volume.toLocaleString()} Total Volume</span>
                             <span>🔒 SOC Type-2 Certified</span>
-                            <span>🏦 Connected to ${GLOBAL_BANKS.length} Global Banks</span>
-                            <span>📡 ${state.activeNodes.toLocaleString()} Active Nodes</span>
+                            <span>🏦 Connected to ${BANKS.length} Banks</span>
                         </div>
-                        <div class="mt-2">© Aetherion MeshHub — Solving Real World Problems: Fraud Prevention, Healthcare Access, Energy Optimization, Agricultural Yield, AI Inference</div>
                     </div>
                 </div>
             </div>
         `;
-
-        root.innerHTML = html;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-        attachEventHandlers();
-    }
-
-    function attachEventHandlers() {
-        // Bank selection
-        document.querySelectorAll('.bank-select-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const bankName = btn.getAttribute('data-bank-name');
-                handleSelectBank(bankName);
-                render();
-            });
-        });
-
-        // Withdraw
-        const withdrawInput = document.getElementById('withdrawAmountInput');
-        if (withdrawInput) withdrawInput.addEventListener('input', (e) => setState({ withdrawAmount: parseInt(e.target.value) || 0 }));
-        const withdrawBtn = document.getElementById('withdrawBtn');
-        if (withdrawBtn) withdrawBtn.addEventListener('click', () => { handleWithdraw(); render(); });
-
-        // Ignition
-        const ignitionBtn = document.getElementById('ignitionBtn');
-        if (ignitionBtn) ignitionBtn.addEventListener('click', () => { handleIgnitionDeploy(); render(); });
-
-        // Architecture selection
-        document.querySelectorAll('.arch-select-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const archId = btn.getAttribute('data-arch-id');
-                handleSelectArch(archId);
-                render();
-            });
-        });
-
-        // Purchase license
-        document.querySelectorAll('.purchase-license-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const archName = btn.getAttribute('data-arch-name');
-                handlePurchaseLicense(archName);
-                render();
-            });
-        });
-
-        // Investment match
-        document.querySelectorAll('.investment-match-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const archName = btn.getAttribute('data-arch-name');
-                handleInvestmentMatch(archName);
-                render();
-            });
-        });
-
-        // Investment deal proposal
-        document.querySelectorAll('.investment-deal-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const investor = btn.getAttribute('data-investor');
-                showNotification(`📈 Deal proposal sent to ${investor}. They will respond within 24 hours.`, 'success');
-            });
-        });
-
-        // Collaborate
-        document.querySelectorAll('.collaborate-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const userName = btn.getAttribute('data-user-name');
-                handleCollaborate(userName);
-                render();
-            });
-        });
-
-        // Simulate Twin buttons
-        const simBtns = document.querySelectorAll('#simulateTwinBtn, #simulateTwinBtn2');
-        simBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                handleSimulateTwin();
-                render();
-            });
-        });
-
-        // Search
-        const searchForm = document.getElementById('searchForm');
+        
+        document.getElementById('root').innerHTML = html;
+        
+        // Re-attach input listener
+        const amountInput = document.getElementById('amountInput');
+        if (amountInput) {
+            amountInput.oninput = (e) => { state.withdrawAmount = parseInt(e.target.value) || 0; };
+        }
+        
         const searchInput = document.getElementById('searchInput');
-        if (searchForm) searchForm.addEventListener('submit', (e) => { handleSearch(e); render(); });
-        if (searchInput) searchInput.addEventListener('input', (e) => setState({ searchQuery: e.target.value }));
+        if (searchInput) {
+            searchInput.oninput = (e) => { state.searchQuery = e.target.value; };
+        }
     }
-
-    // Initialize
-    startLiveStreams();
-    subscribe(render);
+    
+    // ============================================
+    // EXPOSE FUNCTIONS TO GLOBAL WINDOW
+    // ============================================
+    window.selectBank = selectBank;
+    window.withdraw = withdraw;
+    window.deploy = deploy;
+    window.selectArch = selectArch;
+    window.buyLicense = buyLicense;
+    window.findInvestors = findInvestors;
+    window.simulateTwin = simulateTwin;
+    window.collaborate = collaborate;
+    window.search = search;
+    
+    // Initial render
     render();
 </script>
 </body>
